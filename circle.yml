@@ -28,7 +28,7 @@ deployment:
     staging:
       branch: master
       commands:    
-        - ./docker-machine create --driver amazonec2 --amazonec2-region "eu-west-1" --amazonec2-access-key $AWS_ACCESS_KEY_ID --amazonec2-secret-key $AWS_SECRET_ACCESS_KEY --amazonec2-vpc-id vpc-65975600 --amazonec2-ami ami-81fa71f6 TestDocMach-$CIRCLE_BUILD_NUM
+        - ./docker-machine create --driver amazonec2 --amazonec2-region "eu-west-1" --amazonec2-access-key $AWS_ACCESS_KEY_ID --amazonec2-secret-key $AWS_SECRET_ACCESS_KEY --amazonec2-vpc-id vpc-65975600 --amazonec2-instance-type "m1.small" --amazonec2-ami ami-81fa71f6 TestDocMach-$CIRCLE_BUILD_NUM
         - docker $(./docker-machine config TestDocMach-$CIRCLE_BUILD_NUM) run -d -p 44444:80 peer/pb-core-saas-website
         - docker $(./docker-machine config TestDocMach-$CIRCLE_BUILD_NUM) run -d -p 44445:80 peer/pb-core-portal
 
