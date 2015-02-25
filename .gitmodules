@@ -1,0 +1,6 @@
+[submodule "pb-core-saas-website"]
+	path = pb-core-saas-website
+	url = https://github.com/peerbelt/pb-core-saas-website
+[submodule "pb-core-portal"]
+	path = pb-core-portal
+	url = https://github.com/peerbelt/pb-core-portal

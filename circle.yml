@@ -1,0 +1,42 @@
+checkout:
+  post:
+    - git submodule sync
+    - git submodule update --init
+
+machine:
+  node:
+    version: 0.10.32
+  python:
+    version: 2.7.3
+  services:
+    - docker
+
+dependencies:
+  pre:
+    - pip install awscli
+    - cd pb-core-saas-website; docker build -t pb/pb-core-saas-website .
+    - cd pb-core-portal; docker build -t pb/pb-core-portal .
+    - cp .dockercfg ../.dockercfg
+    - wget https://github.com/docker/machine/releases/download/v0.1.0-rc5/docker-machine_linux-amd64
+    - mv docker-machine_linux-amd64 docker-machine
+    - chmod 755 docker-machine
+    - wget https://s1.stackify.com/Account/AgentDownload/Linux --output-document=stackify.tar.gz && tar -zxvf stackify.tar.gz stackify-agent-install-32bit && cd stackify-agent-install-32bit && sudo ./agent-install.sh
+  override:
+    - docker info
+    - docker build -t thedpd/peerbelt .
+
+test:
+  override:
+    - docker run -d -p 44444:80 pb/pb-core-saas-website; sleep 10
+    - docker run -d -p 44445:80 pb/pb-core-portal; sleep 10
+    - curl --retry 10 --retry-delay 5 -v http://localhost:44444
+    - curl --retry 10 --retry-delay 5 -v http://localhost:44445
+
+deployment:
+    staging:
+      branch: master
+      commands:    
+        - ./docker-machine  create --driver amazonec2 --amazonec2-region "eu-west-1" --amazonec2-access-key $AWS_ACCESS_KEY_ID --amazonec2-secret-key $AWS_SECRET_ACCESS_KEY --amazonec2-vpc-id vpc-65975600 TestDocMach-$CIRCLE_BUILD_NUM
+        - docker $(./docker-machine config TestDocMach-$CIRCLE_BUILD_NUM) run -d -p 44444:80 pb/pb-core-saas-website
+        - docker $(./docker-machine config TestDocMach-$CIRCLE_BUILD_NUM) run -d -p 44445:80 pb/pb-core-portal
+
