@@ -9,7 +9,6 @@ machine:
 dependencies:
   pre:
     - pip install awscli
-    - cp .dockercfg ../.dockercfg
     - wget https://github.com/docker/machine/releases/download/v0.1.0-rc5/docker-machine_linux-amd64
     - mv docker-machine_linux-amd64 docker-machine
     - chmod 755 docker-machine
