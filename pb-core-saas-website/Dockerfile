@@ -26,7 +26,6 @@ WORKDIR /home/portal
 #Install the app
 RUN 	sudo ln -s /usr/bin/nodejs /usr/bin/node 
 RUN	npm install 
-RUN	bower --allow-root install 
 RUN	grunt dist
 
 #Open port 80 to the host OS
