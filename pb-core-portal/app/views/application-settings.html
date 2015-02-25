@@ -1,0 +1,50 @@
+<div class="jumbotron">
+  <section>
+    <h4>Application Name:</h4>
+    <input type="text" class="form-control" ng-model="currentApplication.name" placeholder="Your Application Name"/>
+  </section>
+  <section>
+    <h4>Application Description:</h4>
+    <input type="text" class="form-control" name="" id="" ng-model="currentApplication.description" placeholder="Your Application Description"/>
+  </section>
+  <section>
+    <div class="clearfix">
+      <h4 class="pull-left">Domains:</h4>
+      <button class="btn btn-default pull-right" ng-click="addAnEmptyDomain()">Add a <span ng-show="currentApplication.domains.length">new</span> domain</button>
+    </div>
+    <accordion>
+      <accordion-group ng-repeat="domain in currentApplication.domains">
+        <accordion-heading>
+          <h4>{{domain.glob}}</h4>
+          <p class="explanation">selectors: {{domain.selectors.title}}, {{domain.selectors.article}}, {{domain.selectors.main_image}}, {{domain.selectors.thumbnail}}, {{domain.selectors.exclude}}</p>
+        </accordion-heading>
+        <div class="panel">
+          <div>
+            <h5>Domain pattern:</h5>
+            <input type="text" name="" class="form-control" ng-model="domain.glob"/>
+            <p class="explanation">This is your application url. You can use '*' to indicate subdomains and separate them with a comma.</p>
+          </div>
+          <div class="form-inline domain-form">
+            <h5>Selectors:</h5>
+            <p><label for="selector-title">Title:</label><input type="text" ng-model="domain.selectors.title" id="selector-title" class="form-control"/></p>
+            <p><label for="selector-article">Article:</label><input type="text" ng-model="domain.selectors.article" id="selector-article" class="form-control"/></p>
+            <p><label for="selector-main-image">Main image:</label><input type="text" ng-model="domain.selectors.main_image" id="selector-main-image" class="form-control"/></p>
+            <p><label for="selector-thumb-image">Thumb image:</label><input type="text" name="" id="selector-thumb-image" ng-model="domain.selectors.thumbnail" class="form-control"/></p>
+            <p><label for="selector-exclude">Excludes:</label><input class="form-control" type="text" ng-model="domain.selectors.exclude" id="selector-exclude" value=""/></p>
+            <p class="explanation">These are the selectors that PeerBelt is looking up to index content in your site</p>
+          </div>
+          <div>
+            <input type="checkbox" id="use-crawl" ng-model="domain.use_crawl"/><label for="use-crawl">crawl my site</label>
+            <p class="explanation">If this is checked in case no selectors are provided PeerBelt will crawl all content</p>
+          </div>
+          <div>
+            <h5>Url normalizer:</h5>
+            <input type="text" value="{{domain.url_normalizer}}" class="form-control"/>
+            <p class="explanation">Provide a regular expression if your site does not have a canonical url.</p>
+          </div>
+        </div>
+      </accordion-group>
+    </accordion>
+  </section>
+
+</div>

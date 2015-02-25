@@ -1,0 +1,33 @@
+<section class="application" ng-show="!showMultipleApplications && showSingleApplication">
+  <tabset class="tab-animation">
+    <tab heading="App Details">
+      <div class="jumbotron">
+        <section>
+          <h4>Application ID:</h4>
+          <div>{{currentApplication.id}}</div>
+        </section>
+        <section>
+          <h4>Description:</h4>
+          <div>{{currentApplication.description}}</div>
+        </section>
+        <section>
+          <h4>PeerBelt REST endpoint:</h4>
+          <div>
+            <code>{{currentApplication.pb_rest_endpoint}}</code>
+          </div>
+        </section>
+        <section>
+          <h4>PeerBelt script:</h4>
+          <div>
+            <code>&lt;script src="http://peerbelt.com?appId={{currentApplication.id}}"&gt;&lt;/script&gt;</code>
+          </div>
+        </section>
+      </div>
+      <p><input class="btn btn-default" type="button" value="Delete Application"/></p>
+    </tab>
+    <tab heading="App Settings">
+      <ng-include src="'views/application-settings.html'"></ng-include>
+      <p class="app-actions"><input class="btn btn-default" type="button" value="Dismiss Changes"/><input type="button" class="btn btn-default" value="Update App Settings"/></p>
+    </tab>
+  </tabset>
+</section>

@@ -1,0 +1,27 @@
+<header>
+
+  <section class="container">
+    <img src="images/peerbelt.png" alt="PeerBelt Logo" class="logo" />
+    <div class="row">
+      <h1 class="col-sm-8" ng-cloak><span ng-show="showMultipleApplications && !showSingleApplication">Your PeerBelt Applications</span><span ng-show="!showMultipleApplications && showSingleApplication">{{currentApplication.name}}</span></h1>
+      <div class="col-sm-2"><button class="btn btn-default" ng-click="openNewAppView()">Create a new app</button></div>
+      <div class="col-sm-2">
+        <p class="styled-select">
+          <select name="application" id="application" ng-model="selectedCurrentApplication" ng-options="application.name for application in applicationsSelect" ng-change="openAppView()">
+          </select>
+        </p>
+      </div>
+    </div>
+  </section>
+</header>
+<section class="applications container">
+  <section class="applications-list" ng-show="showMultipleApplications && !showSingleApplication">
+    <ul>
+      <li ng-repeat="application in applications">
+        <h2 class="application-title" ng-click="openAppView(application.id, $index)">{{application.name}}</h2>
+        <p class="application-description">{{application.description}}</p>
+      </li>
+    </ul>
+  </section>
+  <ui-view></ui-view>
+</section>

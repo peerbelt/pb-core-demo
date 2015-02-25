@@ -1,0 +1,15 @@
+server {
+        listen                          80;
+
+        root                            /home/portal/dist;
+
+        access_log                      /var/log/nginx/portal.log;
+        error_log                       /var/log/nginx/portal.error.log;
+        gzip on;
+        gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript application/javascript;
+        location / {
+                try_files $uri $uri/index.html;
+                add_header 'Cache-Control' 'max-age=3600 public';
+                satisfy any;
+        }
+}

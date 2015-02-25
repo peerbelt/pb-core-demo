@@ -1,0 +1,13 @@
+<header class="main-header">
+
+  <section class="container">
+    <img src="images/peerbelt.png" alt="PeerBelt Logo" class="logo" />
+    <div class="row">
+      <h1 class="col-sm-9" ng-cloak>{{currentApplication.name}}</h1>
+    </div>
+  </section>
+</header>
+<section class="application-new application container">
+  <ng-include src="'views/application-settings.html'"></ng-include>
+  <p><button class="btn btn-success">Add Application</button></p>
+</section>

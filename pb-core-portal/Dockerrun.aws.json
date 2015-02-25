@@ -1,0 +1,16 @@
+{
+  "AWSEBDockerrunVersion": "1",
+   "Authentication": {
+    "Bucket": "devops-peerbelt",
+    "Key": "docker/.dockercfg"
+  },
+  "Image": {
+    "Name": "thedpd/peerbelt",
+    "Update": "true"
+  },
+  "Ports": [
+    {
+      "ContainerPort": "80"
+    }
+  ]
+}
