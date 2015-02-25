@@ -1,6 +1,6 @@
 checkout:
-  post:
-    - git submodule sync
+  override::
+    - git checkout --recirsive https://github.com/peerbelt/pb-core-demo/
 
 machine:
   node:
