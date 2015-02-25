@@ -1,7 +1,3 @@
-checkout:
-  override::
-    - git checkout --recirsive https://github.com/peerbelt/pb-core-demo/
-
 machine:
   node:
     version: 0.10.32
