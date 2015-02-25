@@ -9,17 +9,14 @@ machine:
 dependencies:
   pre:
     - pip install awscli
-    - git clone https://github.com/peerbelt/pb-core-portal/
-    - cd pb-core-portal; docker build -t pb/pb-core-portal .
-    - cd pb-core-saas-website; build -t pb/pb-core-saas-website .
     - cp .dockercfg ../.dockercfg
     - wget https://github.com/docker/machine/releases/download/v0.1.0-rc5/docker-machine_linux-amd64
     - mv docker-machine_linux-amd64 docker-machine
     - chmod 755 docker-machine
-    - wget https://s1.stackify.com/Account/AgentDownload/Linux --output-document=stackify.tar.gz && tar -zxvf stackify.tar.gz stackify-agent-install-32bit && cd stackify-agent-install-32bit && sudo ./agent-install.sh
   override:
     - docker info
-    - docker build -t thedpd/peerbelt .
+    - cd pb-core-portal; docker build -t pb/pb-core-portal .
+    - cd pb-core-saas-website; docker build -t pb/pb-core-saas-website .
 
 test:
   override:
