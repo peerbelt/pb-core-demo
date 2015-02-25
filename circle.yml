@@ -9,10 +9,9 @@ machine:
 dependencies:
   pre:
     - pip install awscli
-    - git clone https://github.com/peerbelt/pb-core-saas-website/
     - git clone https://github.com/peerbelt/pb-core-portal/
-    - cd pb-core-saas-website; docker build -t pb/pb-core-saas-website .
     - cd pb-core-portal; docker build -t pb/pb-core-portal .
+    - cd pb-core-saas-website; build -t pb/pb-core-saas-website .
     - cp .dockercfg ../.dockercfg
     - wget https://github.com/docker/machine/releases/download/v0.1.0-rc5/docker-machine_linux-amd64
     - mv docker-machine_linux-amd64 docker-machine
