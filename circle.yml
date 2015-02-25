@@ -13,6 +13,8 @@ machine:
 dependencies:
   pre:
     - pip install awscli
+    - git clone https://github.com/peerbelt/pb-core-saas-website/
+    - git clone https://github.com/peerbelt/pb-core-portal/
     - cd pb-core-saas-website; docker build -t pb/pb-core-saas-website .
     - cd pb-core-portal; docker build -t pb/pb-core-portal .
     - cp .dockercfg ../.dockercfg
