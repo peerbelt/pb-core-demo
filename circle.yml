@@ -28,7 +28,7 @@ deployment:
     staging:
       branch: master
       commands:    
-        - ./docker-machine create --driver amazonec2 --amazonec2-region "eu-west-1" --amazonec2-access-key $AWS_ACCESS_KEY_ID --amazonec2-secret-key $AWS_SECRET_ACCESS_KEY --amazonec2-vpc-id vpc-65975600 --amazonec2-instance-type "m1.small" TestDocMach-$CIRCLE_BUILD_NUM
+        - ./docker-machine create --driver amazonec2 --amazonec2-region "eu-west-1" --amazonec2-access-key $AWS_ACCESS_KEY_ID --amazonec2-secret-key $AWS_SECRET_ACCESS_KEY --amazonec2-vpc-id vpc-65975600 --amazonec2-instance-type "m1.small" --amazonec2-ami ami-4374e234 TestDocMach-$CIRCLE_BUILD_NUM
         - docker save -o pb-core-saas-website.tar peer/pb-core-saas-website
         - docker save -o pb-core-portal.tar peer/pb-core-portal
         - scp -i ../.docker/machines/TestDocMach-$CIRCLE_BUILD_NUM/id_rsa pb-core-saas-website.tar ubuntu@`./docker-machine TestDocMach-$CIRCLE_BUILD_NUM ip`:"/home/ubuntu"
