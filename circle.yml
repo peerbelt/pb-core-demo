@@ -14,8 +14,8 @@ dependencies:
     - chmod 755 docker-machine
   override:
     - docker info
-    - aws s3 cp s3://devops-peerbelt/machines/test-env/pb-core-saas-website-15.tar
-    - aws s3 cp s3://devops-peerbelt/machines/test-env/pb-core-portal-47.tar
+    - aws s3 cp s3://devops-peerbelt/machines/test-env/pb-core-saas-website-15.tar .
+    - aws s3 cp s3://devops-peerbelt/machines/test-env/pb-core-portal-47.tar .
     - docker load -i pb-core-saas-website-15.tar
     - docker load -i pb-core-portal-47.tar
     - docker run -d -p 44444:80 peer/pb-core-saas-website 
