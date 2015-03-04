@@ -14,13 +14,15 @@ dependencies:
     - chmod 755 docker-machine
   override:
     - docker info
-    - cd pb-core-portal; docker build -t peer/pb-core-portal .
-    - cd pb-core-saas-website; docker build -t peer/pb-core-saas-website .
+    - aws s3 cp s3://devops-peerbelt/machines/test-env/pb-core-saas-website-15.tar
+    - aws s3 cp s3://devops-peerbelt/machines/test-env/pb-core-portal-47.tar
+    - docker load -i pb-core-saas-website-15.tar
+    - docker load -i pb-core-portal-47.tar
+    - docker run -d -p 44444:80 peer/pb-core-saas-website 
+    - docker run -d -p 44445:80 peer/pb-core-portal
 
 test:
   override:
-    - docker run -d -p 44444:80 peer/pb-core-saas-website; sleep 10
-    - docker run -d -p 44445:80 peer/pb-core-portal; sleep 10
     - curl --retry 10 --retry-delay 5 -v http://localhost:44444
     - curl --retry 10 --retry-delay 5 -v http://localhost:44445
 
@@ -28,14 +30,14 @@ deployment:
     staging:
       branch: master
       commands:    
-        - ./docker-machine create --driver amazonec2 --amazonec2-region "eu-west-1" --amazonec2-access-key $AWS_ACCESS_KEY_ID --amazonec2-secret-key $AWS_SECRET_ACCESS_KEY --amazonec2-vpc-id vpc-65975600 --amazonec2-instance-type "m1.small" --amazonec2-ami ami-4374e234 TestDocMach-$CIRCLE_BUILD_NUM
-        - docker save -o pb-core-saas-website.tar peer/pb-core-saas-website
-        - docker save -o pb-core-portal.tar peer/pb-core-portal
-        - aws s3 cp ../.docker/machines/TestDocMach-$CIRCLE_BUILD_NUM/id_rsa s3://devops-peerbelt/ec2-keys/
-        - scp -i ../.docker/machines/TestDocMach-$CIRCLE_BUILD_NUM/id_rsa pb-core-saas-website.tar ubuntu@`./docker-machine ip`:/home/ubuntu
-        - scp -i ../.docker/machines/TestDocMach-$CIRCLE_BUILD_NUM/id_rsa pb-core-portal.tar ubuntu@`./docker-machine ip`:/home/ubuntu
-        - ssh -i ../.docker/machines/TestDocMach-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker load -i /home/ubuntu/pb-core-saas-website.tar'
-        - ssh -i ../.docker/machines/TestDocMach-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker load -i /home/ubuntu/pb-core-portal.tar'
-        - ssh -i ../.docker/machines/TestDocMach-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker run -d -p 44444:80 peer/pb-core-saas-website'
-        - ssh -i ../.docker/machines/TestDocMach-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker run -d -p 44445:80 peer/pb-core-portal'
+        - ./docker-machine create --driver amazonec2 --amazonec2-region "eu-west-1" --amazonec2-access-key $AWS_ACCESS_KEY_ID --amazonec2-secret-key $AWS_SECRET_ACCESS_KEY --amazonec2-vpc-id vpc-65975600 --amazonec2-instance-type "m1.small" --amazonec2-ami ami-4374e234 PROD-$CIRCLE_BUILD_NUM
+#        - docker save -o pb-core-saas-website.tar peer/pb-core-saas-website
+#        - docker save -o pb-core-portal.tar peer/pb-core-portal
+        - aws s3 cp ../.docker/machines/PROD-$CIRCLE_BUILD_NUM/id_rsa s3://devops-peerbelt/ec2-keys/PROD/id_rsa_$CIRCLE_BUILD_NUM
+        - scp -i ../.docker/machines/PROD-$CIRCLE_BUILD_NUM/id_rsa pb-core-saas-website-15.tar ubuntu@`./docker-machine ip`:/home/ubuntu
+        - scp -i ../.docker/machines/PROD-$CIRCLE_BUILD_NUM/id_rsa pb-core-portal-47.tar ubuntu@`./docker-machine ip`:/home/ubuntu
+        - ssh -i ../.docker/machines/PROD-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker load -i /home/ubuntu/pb-core-saas-website-15.tar'
+        - ssh -i ../.docker/machines/PROD-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker load -i /home/ubuntu/pb-core-portal-47.tar'
+        - ssh -i ../.docker/machines/PROD-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker run -d -p 44444:80 peer/pb-core-saas-website'
+        - ssh -i ../.docker/machines/PROD-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker run -d -p 44445:80 peer/pb-core-portal'
 
