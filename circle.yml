@@ -15,9 +15,9 @@ dependencies:
   override:
     - docker info
     - aws s3 cp s3://devops-peerbelt/machines/test-env/pb-core-saas-website-15.tar .
-    - aws s3 cp s3://devops-peerbelt/machines/test-env/pb-core-portal-47.tar .
+    - aws s3 cp s3://devops-peerbelt/machines/test-env/pb-core-portal-50.tar .
     - docker load -i pb-core-saas-website-15.tar
-    - docker load -i pb-core-portal-47.tar
+    - docker load -i pb-core-portal-50.tar
     - docker run -d -p 44444:80 peer/pb-core-saas-website 
     - docker run -d -p 44445:80 peer/pb-core-portal
 
@@ -27,17 +27,18 @@ test:
     - curl --retry 10 --retry-delay 5 -v http://localhost:44445
 
 deployment:
-    staging:
+    production:
       branch: master
-      commands:    
-        - ./docker-machine create --driver amazonec2 --amazonec2-region "eu-west-1" --amazonec2-access-key $AWS_ACCESS_KEY_ID --amazonec2-secret-key $AWS_SECRET_ACCESS_KEY --amazonec2-vpc-id vpc-65975600 --amazonec2-instance-type "m1.small" --amazonec2-ami ami-4374e234 PROD-$CIRCLE_BUILD_NUM
-#        - docker save -o pb-core-saas-website.tar peer/pb-core-saas-website
-#        - docker save -o pb-core-portal.tar peer/pb-core-portal
+      commands:   
+        - ./docker-machine create --driver amazonec2 --amazonec2-region "eu-west-1" --amazonec2-access-key $AWS_ACCESS_KEY_ID --amazonec2-secret-key $AWS_SECRET_ACCESS_KEY --amazonec2-vpc-id vpc-65975600 --amazonec2-instance-type "m1.small" --amazonec2-ami ami-4f0f9f38 --amazonec2-root-size "20" PROD-$CIRCLE_BUILD_NUM 
         - aws s3 cp ../.docker/machines/PROD-$CIRCLE_BUILD_NUM/id_rsa s3://devops-peerbelt/ec2-keys/PROD/id_rsa_$CIRCLE_BUILD_NUM
         - scp -i ../.docker/machines/PROD-$CIRCLE_BUILD_NUM/id_rsa pb-core-saas-website-15.tar ubuntu@`./docker-machine ip`:/home/ubuntu
-        - scp -i ../.docker/machines/PROD-$CIRCLE_BUILD_NUM/id_rsa pb-core-portal-47.tar ubuntu@`./docker-machine ip`:/home/ubuntu
+        - scp -i ../.docker/machines/PROD-$CIRCLE_BUILD_NUM/id_rsa pb-core-portal-50.tar ubuntu@`./docker-machine ip`:/home/ubuntu
+        - scp -i ../.docker/machines/TEST-$CIRCLE_BUILD_NUM/id_rsa portal.nginx ubuntu@`./docker-machine ip`:/home/ubuntu/portal.nginx
+        - ssh -i ../.docker/machines/TEST-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo mv /home/ubuntu/portal.nginx /etc/nginx/sites-available/portal.nginx'
+        - ssh -i ../.docker/machines/TEST-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo  ln -s  /etc/nginx/sites-available/portal.nginx /etc/nginx/sites-enabled/portal.nginx'
         - ssh -i ../.docker/machines/PROD-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker load -i /home/ubuntu/pb-core-saas-website-15.tar'
-        - ssh -i ../.docker/machines/PROD-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker load -i /home/ubuntu/pb-core-portal-47.tar'
+        - ssh -i ../.docker/machines/PROD-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker load -i /home/ubuntu/pb-core-portal-50.tar'
         - ssh -i ../.docker/machines/PROD-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker run -d -p 44444:80 peer/pb-core-saas-website'
         - ssh -i ../.docker/machines/PROD-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker run -d -p 44445:80 peer/pb-core-portal'
-
+        - ssh -i ../.docker/machines/TEST-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo service nginx restart'
