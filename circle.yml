@@ -22,6 +22,7 @@ test:
 deployment:
    incremental:
      branch: increment
+     commands: 
        - ssh -i id_rsa_103 ubuntu@52.16.244.57 'sudo docker pull thedpd/console:latest'
        - ssh -i id_rsa_103 ubuntu@52.16.244.57 'sudo docker stop console1'
        - ssh -i id_rsa_103 ubuntu@52.16.244.57 'sudo docker rm -f console1'
