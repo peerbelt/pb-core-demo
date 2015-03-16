@@ -1,0 +1,38 @@
+machine:
+  node:
+    version: 0.10.32
+  python:
+    version: 2.7.3
+  services:
+    - docker
+dependencies:
+  pre:
+    - pip install awscli
+    - wget https://github.com/docker/machine/releases/download/v0.1.0-rc5/docker-machine_linux-amd64
+#    - mv docker-machine_linux-amd64 docker-machine
+#    - chmod 755 docker-machine
+  override:
+    - docker pull thedpd/console:latest
+    - aws s3 cp s3:///devops-peerbelt/ec2-keys/TEST/id_rsa_$NUM
+    - chmod 400 ./id_rsa_$NUM
+test:
+  override:
+    - docker run -d 44444:80 thedpd/console:latest; sleep 10;
+    - curl --retry 10 --retry-delay 5 -v http://localhost:44444
+deployment:
+   incremental:
+     branch: increment
+       - ssh -i id_rsa_$NUM ubuntu@$SERVER_IP 'sudo docker pull thedpd/console:latest'
+       - ssh -i id_rsa_$NUM ubuntu@$SERVER_IP 'sudo docker stop thedpd/console:latest'
+       - ssh -i id_rsa_$NUM ubuntu@$SERVER_IP 'sudo docker stop thedpd/console:latest' 
+
+
+
+
+#Get images
+#Push image
+#Stop old image
+#Start new image
+#Test new image on server 
+#Stop old backup image 
+#Start new backup image
