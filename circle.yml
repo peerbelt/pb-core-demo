@@ -14,22 +14,22 @@ dependencies:
   override:
     - cp .dockercfg ../.dockercfg
     - sed -i "s/DOCKER_PASS/$DOCKER_PASS/g" ../.dockercfg
-    - docker pull thedpd/console:latest
+    - docker pull thedpd/console:103
     - aws s3 cp s3://devops-peerbelt/ec2-keys/TEST/id_rsa_103 .
     - chmod 400 ./id_rsa_103
 test:
   override:
-    - docker run -d -p 44444:80 thedpd/console:latest; sleep 10;
+    - docker run -d -p 44444:80 thedpd/console:103; sleep 10;
     - curl --retry 10 --retry-delay 5 -v http://localhost:44444
 deployment:
    incremental:
      branch: increment
      commands: 
        - scp -i id_rsa_103 ../.dockercfg ubuntu@52.16.244.57:/home/ubuntu
-       - ssh -i id_rsa_103 ubuntu@52.16.244.57 'sudo docker pull thedpd/console:latest'
+       - ssh -i id_rsa_103 ubuntu@52.16.244.57 'sudo docker pull thedpd/console:103'
        - ssh -i id_rsa_103 ubuntu@52.16.244.57 'sudo docker stop console1'
        - ssh -i id_rsa_103 ubuntu@52.16.244.57 'sudo docker rm -f console1'
-       - ssh -i id_rsa_103 ubuntu@52.16.244.57 'sudo docker run -d -p 44444:80 --name console1 thedpd/console:latest; sleep 10'
+       - ssh -i id_rsa_103 ubuntu@52.16.244.57 'sudo docker run -d -p 44444:80 --name console1 thedpd/console:103; sleep 10'
        - ssh -i id_rsa_103 ubuntu@52.16.244.57 'sudo docker stop console_backups;sleep 10'
        - ssh -i id_rsa_103 ubuntu@52.16.244.57 'sudo docker rm -f console_backups;sleep 10'
-       - ssh -i id_rsa_103 ubuntu@52.16.244.57 'sudo docker run -d -p 44445:80 --name console_backups thedpd/console:latest; sleep 10' 
+       - ssh -i id_rsa_103 ubuntu@52.16.244.57 'sudo docker run -d -p 44445:80 --name console_backups thedpd/console:103; sleep 10' 

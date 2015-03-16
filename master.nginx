@@ -1,0 +1,9 @@
+upstream portal {
+    server localhost:44444 fail_timeout=0;
+    server localhost:44445 fail_timeout=0 backup;
+}
+server {
+    location / {
+        proxy_pass http://portal;
+        proxy_set_header Host      $host;
+    }
