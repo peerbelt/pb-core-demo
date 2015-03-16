@@ -12,6 +12,7 @@ dependencies:
 #    - mv docker-machine_linux-amd64 docker-machine
 #    - chmod 755 docker-machine
   override:
+    - cp .dockercfg ../.dockercfg
     - docker pull thedpd/console:latest
     - aws s3 cp s3://devops-peerbelt/ec2-keys/TEST/id_rsa_103 .
     - chmod 400 ./id_rsa_103
