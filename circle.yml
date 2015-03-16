@@ -8,13 +8,13 @@ machine:
 dependencies:
   pre:
     - pip install awscli
-    - wget https://github.com/docker/machine/releases/download/v0.1.0-rc5/docker-machine_linux-amd64
+#    - wget https://github.com/docker/machine/releases/download/v0.1.0-rc5/docker-machine_linux-amd64
 #    - mv docker-machine_linux-amd64 docker-machine
 #    - chmod 755 docker-machine
   override:
     - docker pull thedpd/console:latest
-    - aws s3 cp s3:///devops-peerbelt/ec2-keys/TEST/id_rsa_$NUM
-    - chmod 400 ./id_rsa_$NUM
+    - aws s3 cp s3://devops-peerbelt/ec2-keys/TEST/id_rsa_103 .
+    - chmod 400 ./id_rsa_103
 test:
   override:
     - docker run -d 44444:80 thedpd/console:latest; sleep 10;
@@ -22,9 +22,13 @@ test:
 deployment:
    incremental:
      branch: increment
-       - ssh -i id_rsa_$NUM ubuntu@$SERVER_IP 'sudo docker pull thedpd/console:latest'
-       - ssh -i id_rsa_$NUM ubuntu@$SERVER_IP 'sudo docker stop thedpd/console:latest'
-       - ssh -i id_rsa_$NUM ubuntu@$SERVER_IP 'sudo docker stop thedpd/console:latest' 
+       - ssh -i id_rsa_103 ubuntu@52.16.244.57 'sudo docker pull thedpd/console:latest'
+       - ssh -i id_rsa_103 ubuntu@52.16.244.57 'sudo docker stop console1'
+       - ssh -i id_rsa_103 ubuntu@52.16.244.57 'sudo docker rm -f console1'
+       - ssh -i id_rsa_103 ubuntu@52.16.244.57 'sudo docker run -d -p 44444:80 --name console1 thedpd/console:latest; sleep 10'
+       - ssh -i id_rsa_103 ubuntu@52.16.244.57 'sudo docker stop console_backups;sleep 10'
+       - ssh -i id_rsa_103 ubuntu@52.16.244.57 'sudo docker rm -f console_backups;sleep 10'
+       - ssh -i id_rsa_103 ubuntu@52.16.244.57 'sudo docker run -d -p 44445:80 --name console_backups thedpd/console:latest; sleep 10' 
 
 
 
