@@ -19,7 +19,7 @@ dependencies:
     - chmod 400 ./id_rsa_103
 test:
   override:
-    - docker run -d 44444:80 thedpd/console:latest; sleep 10;
+    - docker run -d -p 44444:80 thedpd/console:latest; sleep 10;
     - curl --retry 10 --retry-delay 5 -v http://localhost:44444
 deployment:
    incremental:
