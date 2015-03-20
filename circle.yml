@@ -43,7 +43,7 @@ deployment:
       branch: cd
       commands:
         # Creates the EC2 instance
-        - ./docker-machine create --driver amazonec2 --amazonec2-region "eu-west-1" --amazonec2-access-key $AWS_ACCESS_KEY_ID --amazonec2-secret-key $AWS_SECRET_ACCESS_KEY --amazonec2-vpc-id vpc-65975600 --amazonec2-instance-type "m1.small" --amazonec2-ami ami-4f0f9f38 --amazonec2-root-size "20" TEST-$CIRCLE_BUILD_NUM
+        - ./docker-machine create --driver amazonec2 --amazonec2-region "eu-west-1" --amazonec2-access-key $AWS_ACCESS_KEY_ID --amazonec2-secret-key $AWS_SECRET_ACCESS_KEY --amazonec2-vpc-id vpc-65975600 --amazonec2-instance-type "m1.small" --amazonec2-ami ami-4f0f9f38 --amazonec2-root-size "20" CD-$CIRCLE_BUILD_NUM
         # Pushes the machine private key to S3
         - aws s3 cp ../.docker/machines/TEST-$CIRCLE_BUILD_NUM/id_rsa s3://devops-peerbelt/ec2-keys/CD/id_rsa_$CIRCLE_BUILD_NUM
         # Copies the services and Nginx config to the new EC2
