@@ -8,28 +8,10 @@ machine:
 dependencies:
   pre:
     - pip install awscli
-#    - wget https://github.com/docker/machine/releases/download/v0.1.0-rc5/docker-machine_linux-amd64
-#    - mv docker-machine_linux-amd64 docker-machine
-#    - chmod 755 docker-machine
-  override:
-    - cp .dockercfg ../.dockercfg
-    - sed -i "s/DOCKER_PASS/$DOCKER_PASS/g" ../.dockercfg
-    - docker pull thedpd/console:103
-    - aws s3 cp s3://devops-peerbelt/ec2-keys/TEST/id_rsa_103 .
-    - chmod 400 ./id_rsa_103
-test:
-  override:
-    - docker run -d -p 44444:80 thedpd/console:103; sleep 10;
-    - curl --retry 10 --retry-delay 5 -v http://localhost:44444
-deployment:
-   incremental:
-     branch: increment
-     commands: 
-       - scp -i id_rsa_103 ../.dockercfg ubuntu@52.16.244.57:/home/ubuntu
-       - ssh -i id_rsa_103 ubuntu@52.16.244.57 'sudo docker pull thedpd/console:103'
-       - ssh -i id_rsa_103 ubuntu@52.16.244.57 'sudo docker stop console1'
-       - ssh -i id_rsa_103 ubuntu@52.16.244.57 'sudo docker rm -f console1'
-       - ssh -i id_rsa_103 ubuntu@52.16.244.57 'sudo docker run -d -p 44444:80 --name console1 thedpd/console:103; sleep 10'
-       - ssh -i id_rsa_103 ubuntu@52.16.244.57 'sudo docker stop console_backups;sleep 10'
-       - ssh -i id_rsa_103 ubuntu@52.16.244.57 'sudo docker rm -f console_backups;sleep 10'
-       - ssh -i id_rsa_103 ubuntu@52.16.244.57 'sudo docker run -d -p 44445:80 --name console_backups thedpd/console:103; sleep 10' 
+    - echo AWS_IP=`aws ec2 describe-instances --filters "Name=tag-key,Values=environment" | grep PublicIpAddress | awk '{print $2}' | sed 's/[",]//g'` >> .bashrc 
+    - cat .bashrc 
+    - aws s3 cp s3://devops-peerbelt/ec2-keys/id_rsa .
+    - chmod 400 id_rsa
+tests: 
+  override: 
+    - ssh -i id_rsa ubuntu@$AWS_IP 'pwd'
