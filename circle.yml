@@ -8,7 +8,7 @@ machine:
 dependencies:
   pre:
     - pip install awscli
-    - cat venv 
+    - ls -a venv 
     - sudo echo "export AWS_IP=AWSIP" >> /etc/profile.d/vars.sh
     - AWS_IP=`aws ec2 describe-instances --filters "Name=tag-key,Values=environment" | grep PublicIpAddress | awk '{print $2}' | sed 's/[",]//g'`; sudo sed -i "s|AWSIP|$AWS_IP|g" /etc/profile.d/vars.sh 
     - cat /etc/profile.d/vars.sh
