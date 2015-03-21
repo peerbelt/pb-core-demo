@@ -8,9 +8,9 @@ machine:
 dependencies:
   pre:
     - pip install awscli
-    - echo "export AWS_IP=AWSIP" >> .profile
-    - AWS_IP=`aws ec2 describe-instances --filters "Name=tag-key,Values=environment" | grep PublicIpAddress | awk '{print $2}' | sed 's/[",]//g'`; sed -i "s|AWSIP|$AWS_IP|g" .profile 
-    - cat .profile 
+    - echo "export AWS_IP=AWSIP" >> /etc/profile.d/vars.sh
+    - AWS_IP=`aws ec2 describe-instances --filters "Name=tag-key,Values=environment" | grep PublicIpAddress | awk '{print $2}' | sed 's/[",]//g'`; sed -i "s|AWSIP|$AWS_IP|g" /etc/profile.d/vars.sh 
+    - cat /etc/profile.d/vars.sh
     - aws s3 cp s3://devops-peerbelt/ec2-keys/id_rsa .
     - chmod 400 id_rsa
 test: 
