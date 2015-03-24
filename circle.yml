@@ -25,19 +25,19 @@ dependencies:
     - aws s3 cp s3://devops-peerbelt/machines/CD/elasticsearch.tar .
     - docker load -i pb-core-saas-website-latest.tar
     - docker load -i pb-core-console-latest.tar
-    - docker load -i pb-core-console-api-latest.tar
-    - docker load -i pb-core-tracking-api-latest.tar
-    - docker load -i pb-core-consumer-api-latest.tar
-    - docker load -i pb-core-digest-latest.tar
+#    - docker load -i pb-core-console-api-latest.tar
+#    - docker load -i pb-core-tracking-api-latest.tar
+#    - docker load -i pb-core-consumer-api-latest.tar
+#    - docker load -i pb-core-digest-latest.tar
 
 test:
   override:
     - docker run -d -p 44444:80 peerbelt/pb-core-saas-website
     - docker run -d -p 44445:80 peerbelt/pb-core-console
-    - docker run -d -p 33333:3000 peerbelt/pb-core-console-api
-    - docker run -d -p 22222:3001 peerbelt/pb-core-tracking-api 
-    - docker run -d -p 11111:3001 peerbelt/pb-core-consumer-api
-    - docker run -d peerbelt/pb-core-digest
+#    - docker run -d -p 33333:3000 peerbelt/pb-core-console-api
+#    - docker run -d -p 22222:3001 peerbelt/pb-core-tracking-api 
+#    - docker run -d -p 11111:3001 peerbelt/pb-core-consumer-api
+#    - docker run -d peerbelt/pb-core-digest
     - curl --retry 10 --retry-delay 5 -v http://localhost:44444
     - curl --retry 10 --retry-delay 5 -v http://localhost:44445
 
@@ -46,7 +46,7 @@ deployment:
       branch: cd
       commands:
         # Creates the EC2 instance
-        - ./docker-machine create --driver amazonec2 --amazonec2-region "eu-west-1" --amazonec2-access-key $AWS_ACCESS_KEY_ID --amazonec2-secret-key $AWS_SECRET_ACCESS_KEY --amazonec2-vpc-id vpc-65975600 --amazonec2-instance-type "m1.small" --amazonec2-ami ami-4f0f9f38 --amazonec2-root-size "20" cd-eu-peerbelt-$CIRCLE_BUILD_NUM
+        - ./docker-machine create --driver amazonec2 --amazonec2-region "eu-west-1" --amazonec2-access-key $AWS_ACCESS_KEY_ID --amazonec2-secret-key $AWS_SECRET_ACCESS_KEY --amazonec2-vpc-id vpc-65975600 --amazonec2-instance-type "m1.small" --amazonec2-ami ami-a72bb2d0 --amazonec2-root-size "20" cd-eu-peerbelt-$CIRCLE_BUILD_NUM
         # Pushes the machine private key to S3
         - aws s3 cp ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa s3://devops-peerbelt/ec2-keys/CD/id_rsa_$CIRCLE_BUILD_NUM
         # Install Cassandra and Elastic Search images
@@ -85,5 +85,7 @@ deployment:
         - scp -i ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa config ubuntu@`./docker-machine ip`:/home/ubuntu/.aws/config
         - ssh -i ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'chmod 755 /tmp/user-config.sh'
         - ssh -i ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo /tmp/user-config.sh'
+        # Start Papertrail
+        - ssh -i ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo service remote_syslog start' 
         # Clean up
         - ssh -i ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo rm -rf /home/ubuntu/pb* '
