@@ -53,7 +53,7 @@ deployment:
         - scp -i ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa pb-core-console-api-latest.tar root@`./docker-machine ip`:/tmp
         - scp -i ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa pb-core-tracking-api-latest.tar root@`./docker-machine ip`:/tmp
         - scp -i ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa pb-core-consumer-api-latest.tar root@`./docker-machine ip`:/tmp
-        - scp -i ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa pb-core-digest-latest.tar root@`./docker-machine ip`:/home/tmp
+        - scp -i ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa pb-core-digest-latest.tar root@`./docker-machine ip`:/tmp
         - scp -i ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa pb_services.nginx root@`./docker-machine ip`:/tmp/pb_services.nginx
         - ssh -i ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa root@`./docker-machine ip` 'sudo mv /tmp/pb_services.nginx /etc/nginx/sites-available/pb_services.nginx'
         - ssh -i ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa root@`./docker-machine ip` 'sudo  ln -s  /etc/nginx/sites-available/pb_services.nginx /etc/nginx/sites-enabled/pb_services.nginx'
