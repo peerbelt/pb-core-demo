@@ -45,6 +45,6 @@ deployment:
         # Creates the EC2 instance
         - ./docker-machine create --driver rackspace cd-eu-peerbelt-$CIRCLE_BUILD_NUM
         # Pushes the machine private key to S3
-        - /usr/bin/ruby keys.rb
+        # - /usr/bin/ruby keys.rb
         #Deploy service containers 
         - /bin/bash -x ./deploy.sh 
