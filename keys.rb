@@ -1,8 +1,9 @@
 #!/usr/bin/env ruby
 
+require rubygems;
+require fog;
+
 docker_id_rsa=i"/home/ubuntu/.docker/machines/cd-eu-peerbelt-#{ENV['CIRCLE_BUILD_NUM]}/id_rsa"
-require 'rubygems'
-require 'fog'
 
 service = Fog::Storage.new({
     :provider            => 'Rackspace',         # Rackspace Fog provider
