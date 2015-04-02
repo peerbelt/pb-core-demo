@@ -4,7 +4,7 @@ machine:
   python:
     version: 2.7.3
   ruby:
-    version: 2.1.5
+    version: 1.9.3
   services:
     - docker
 
@@ -18,7 +18,6 @@ dependencies:
     - sed -i "s|AWS_SECRET|$AWS_SECRET_ACCESS_KEY|g" config
     - sed -i "s/USER/$OS_USERNAME/g" keys.rb
     - sed -i "s/API_KEY/$OS_API_KEY/g" keys.rb
-    - gem install fog
     - ruby -v
   override:
     - docker info
