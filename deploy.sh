@@ -48,5 +48,6 @@ ssh -i $ID_RSA ubuntu@`./docker-machine ip` 'sudo /tmp/user-config.sh'
 #ssh -i ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo service remote_syslog start' 
 # Clean up
 #ssh -i ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo rm -rf /home/ubuntu/pb* '
+ssh -i $ID_RSA ubuntu@`./docker-machine ip` 'sudo s -i s/PermitRootLogin\ yes/PermitRootLogin\ no/g /etc/ssh/sshd_config; sudo /etc/init.d/ssh restart'
 
 
