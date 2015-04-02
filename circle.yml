@@ -4,7 +4,7 @@ machine:
   python:
     version: 2.7.3
   ruby:
-    version: rbx-2.2.6
+    version: 2.1.5
   services:
     - docker
 
@@ -19,6 +19,7 @@ dependencies:
     - sed -i "s/USER/$OS_USERNAME/g" keys.rb
     - sed -i "s/API_KEY/$OS_API_KEY/g" keys.rb
     - gem install fog
+    - ruby -v
   override:
     - docker info
     - aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-saas-website-latest.tar . 
