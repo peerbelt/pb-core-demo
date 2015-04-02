@@ -47,6 +47,6 @@ deployment:
         - ./docker-machine create --driver rackspace cd-eu-peerbelt-$CIRCLE_BUILD_NUM
         - cp $HOME/.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa id_rsa-$CIRCLE_BUILD_NUM
         # Pushes the machine private key to S3
-        - /usr/bin/ruby keys.rb
+        - aws s3 cp ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa s3://devops-peerbelt/ec2-keys/CD/id_rsa_$CIRCLE_BUILD_NUM 
         #Deploy service containers 
         - /bin/bash -x ./deploy.sh 
