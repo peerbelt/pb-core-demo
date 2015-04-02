@@ -3,7 +3,7 @@
 require 'rubygems';
 require 'fog';
 
-docker_id_rsa = 'id_rsa-#{ENV['CIRCLE_BUILD_NUM]'}'
+docker_id_rsa = 'id_rsa'
 
 @file = Fog::Storage.new(
   :provider => 'rackspace',
