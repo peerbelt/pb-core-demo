@@ -36,3 +36,17 @@ ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker run --name pb-core-tracki
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker run --name pb-core-consumer-api -d -p 11111:3000 --link pb_elasticsearch:pb_elasticsearch peerbelt/pb-core-consumer-api'
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker run --name pb-core-digest -d --link pb_cassandra:pb_cassandra --link pb_elasticsearch:pb_elasticsearch peerbelt/pb-core-digest'
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo service nginx restart'
+
+# Create Team memebers accounts and get keys frm S3
+scp -i $ID_RSA user-config.sh ubuntu@`./docker-machine ip`:/tmp
+ssh -i $ID_RSA ubuntu@`./docker-machine ip` 'mkdir -p /home/ubuntu/.aws'
+ssh -i $ID_RSA ubuntu@`./docker-machine ip` 'sudo apt-get -y install awscli'
+scp -i $ID_RSA config ubuntu@`./docker-machine ip`:/home/ubuntu/.aws/config
+ssh -i $ID_RSA ubuntu@`./docker-machine ip` 'chmod 755 /tmp/user-config.sh'
+ssh -i $ID_RSA ubuntu@`./docker-machine ip` 'sudo /tmp/user-config.sh'
+# Start Papertrail
+#ssh -i ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo service remote_syslog start' 
+# Clean up
+#ssh -i ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo rm -rf /home/ubuntu/pb* '
+
+
