@@ -2,4 +2,4 @@
 source "https://rubygems.org"
 
 # gem "rails"
-gem "fog"
+gem "fog", "1.28.0"
