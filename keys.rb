@@ -12,4 +12,10 @@ file = Fog::Storage.new({
     :rackspace_region    => :'iad'
 })
 
-file = directory.files.create :key => '#{docker_id_rsa}', :body => File.open "id_rsa-#{ENV['CIRCLE_BUILD_NUM]}"
+directory =  @file.directories.get('devops')
+
+file = directory.files.create(
+  :key => "machine-keys/#{docker_id_rsa},
+  :body => (File.open #{docker_id_rsa})
+)
+
