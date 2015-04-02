@@ -3,7 +3,7 @@
 require 'rubygems';
 require 'fog';
 
-docker_id_rsa = "id_rsa-#{ENV['CIRCLE_BUILD_NUM]'}"
+docker_id_rsa = 'id_rsa-#{ENV['CIRCLE_BUILD_NUM]'}'
 
 @file = Fog::Storage.new(
   :provider => 'rackspace',
@@ -15,6 +15,6 @@ docker_id_rsa = "id_rsa-#{ENV['CIRCLE_BUILD_NUM]'}"
 directory = @file.directories.get('devops')
 
 file = directory.files.create(
-  :key => "machine-keys/#{docker_id_rsa}",
-  :body => (File.open "#{docker_id_rsa}")
+  :key => 'machine-keys/#{docker_id_rsa}',
+  :body => (File.open '#{docker_id_rsa}')
 )
