@@ -39,15 +39,15 @@ ssh -i $ID_RSA root@`./docker-machine ip` 'sudo service nginx restart'
 
 # Create Team memebers accounts and get keys frm S3
 scp -i $ID_RSA user-config.sh root@`./docker-machine ip`:/tmp
-ssh -i $ID_RSA root@`./docker-machine ip` 'mkdir -p /home/ubuntu/.aws'
-ssh -i $ID_RSA root@`./docker-machine ip` 'sudo apt-get -y install awscli'
-scp -i $ID_RSA config root@`./docker-machine ip`:/home/ubuntu/.aws/config
+ssh -i $ID_RSA root@`./docker-machine ip` 'mkdir -p /root/.aws'
+ssh -i $ID_RSA root@`./docker-machine ip` 'apt-get -y install awscli'
+scp -i $ID_RSA config root@`./docker-machine ip`:/root/.aws/config
 ssh -i $ID_RSA root@`./docker-machine ip` 'chmod 755 /tmp/user-config.sh'
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo /tmp/user-config.sh'
 # Start Papertrail
 #ssh -i ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo service remote_syslog start' 
 # Clean up
 #ssh -i ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo rm -rf /home/ubuntu/pb* '
-ssh -i $ID_RSA root@`./docker-machine ip` 'sudo s -i s/PermitRootLogin\ yes/PermitRootLogin\ no/g /etc/ssh/sshd_config; sudo /etc/init.d/ssh restart'
+ssh -i $ID_RSA root@`./docker-machine ip` 'sudo -i s/PermitRootLogin\ yes/PermitRootLogin\ no/g /etc/ssh/sshd_config; sudo /etc/init.d/ssh restart'
 
 
