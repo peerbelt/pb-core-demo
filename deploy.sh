@@ -8,7 +8,7 @@ USER_DIR=/tmp
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker run -d --name pb_cassandra spotify/cassandra:latest'
 scp -i $ID_RSA elasticsearch.tar root@`./docker-machine ip`:/tmp
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /tmp/elasticsearch.tar'
-ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker run -d --name pb_elasticsearch -p 9200:9200 peerbelt/elasticsearch'
+ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker run -d --name pb_elasticsearch peerbelt/elasticsearch'
 
 # Copies the services and Nginx config to the new EC2
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo apt-get install -y nginx; sudo rm -rf /etc/nginx/sites-enabled/default'
@@ -29,11 +29,11 @@ ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /tmp/pb-core-cons
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /tmp/pb-core-tracking-api-latest.tar'
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /tmp/pb-core-consumer-api-latest.tar'
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /tmp/pb-core-digest-latest.tar'
-ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker run --name pb-core-saas-website -d -p 44445:80 peerbelt/pb-core-saas-website'
-ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker run --name pb-core-console -d -p 44444:80 peerbelt/pb-core-console'
-ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker run --name pb-core-console-api -d -p 33333:3000  peerbelt/pb-core-console-api'
-ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker run --name pb-core-tracking-api -d -p 22222:3001 --link pb_cassandra:pb_cassandra peerbelt/pb-core-tracking-api'
-ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker run --name pb-core-consumer-api -d -p 11111:3000 --link pb_elasticsearch:pb_elasticsearch peerbelt/pb-core-consumer-api'
+ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker run --name pb-core-saas-website -d -p localhost:44445:80 peerbelt/pb-core-saas-website'
+ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker run --name pb-core-console -d -p localhost:44444:80 peerbelt/pb-core-console'
+ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker run --name pb-core-console-api -d -p localhost:33333:3000  peerbelt/pb-core-console-api'
+ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker run --name pb-core-tracking-api -d -p localhost:22222:3001 --link pb_cassandra:pb_cassandra peerbelt/pb-core-tracking-api'
+ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker run --name pb-core-consumer-api -d -p localhost:11111:3000 --link pb_elasticsearch:pb_elasticsearch peerbelt/pb-core-consumer-api'
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker run --name pb-core-digest -d --link pb_cassandra:pb_cassandra --link pb_elasticsearch:pb_elasticsearch peerbelt/pb-core-digest'
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo service nginx restart'
 
@@ -48,6 +48,6 @@ ssh -i $ID_RSA root@`./docker-machine ip` 'sudo /tmp/user-config.sh'
 #ssh -i ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo service remote_syslog start' 
 # Clean up
 #ssh -i ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo rm -rf /home/ubuntu/pb* '
-ssh -i $ID_RSA root@`./docker-machine ip` 'sudo -i s/PermitRootLogin\ yes/PermitRootLogin\ no/g /etc/ssh/sshd_config; sudo /etc/init.d/ssh restart'
+ssh -i $ID_RSA root@`./docker-machine ip` 'sudo sed -i s/PermitRootLogin\ yes/PermitRootLogin\ no/g /etc/ssh/sshd_config; sudo /etc/init.d/ssh restart'
 
 

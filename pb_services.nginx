@@ -21,7 +21,6 @@ server {
     access_log /var/log/nginx/www-pb-access.log;
     error_log /var/log/nginx/www-pb-error.log;
     location / {
-#        proxy_pass http://172.31.41.14:44445;
         proxy_pass http://localhost:44445;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
