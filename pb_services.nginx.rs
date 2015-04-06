@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name cd-eu-console.peerbelt.link;
+    server_name cd-iad-console.peerbelt.link;
     access_log /var/log/nginx/console-pb-access.log;
     error_log /var/log/nginx/console-pb-error.log;
     location / {
@@ -17,11 +17,10 @@ server {
 
 server {
     listen 80;
-    server_name cd-eu-www.peerbelt.link;
+    server_name cd-iad-www.peerbelt.link;
     access_log /var/log/nginx/www-pb-access.log;
     error_log /var/log/nginx/www-pb-error.log;
     location / {
-#        proxy_pass http://172.31.41.14:44445;
         proxy_pass http://localhost:44445;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
@@ -32,7 +31,7 @@ server {
 
 server {
     listen 80;
-    server_name cd-eu-tracking.peerbelt.link;
+    server_name cd-iad-tracking.peerbelt.link;
     access_log /var/log/nginx/tracking-pb-access.log;
     error_log /var/log/nginx/tracking-pb-error.log;
     location / {
@@ -46,7 +45,7 @@ server {
 
 server {
     listen 80;
-    server_name cd-eu-consumer.peerbelt.link;
+    server_name cd-iad-consumer.peerbelt.link;
     access_log /var/log/nginx/consumer-pb-access.log;
     error_log /var/log/nginx/consumer-pb-error.log;
     location / {
