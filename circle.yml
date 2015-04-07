@@ -54,6 +54,8 @@ deployment:
         - scp -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa elasticsearch.tar ubuntu@`./docker-machine ip`:/home/ubuntu
         - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker load -i /home/ubuntu/elasticsearch.tar'
         - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker run -d --name pb_elasticsearch -p 9200:9200 peerbelt/elasticsearch'
+        - scp -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa elastic_conf.sh ubuntu@`./docker-machine ip`:/tmp/elastic_conf.sh
+        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo bash -x /tmp/elastic_conf.sh'
         # Copies the services and Nginx config to the new EC2
         - scp -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa pb-core-saas-website-latest.tar ubuntu@`./docker-machine ip`:/home/ubuntu
         - scp -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa pb-core-console-latest.tar ubuntu@`./docker-machine ip`:/home/ubuntu
