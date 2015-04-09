@@ -48,5 +48,6 @@ deployment:
         - cp $HOME/.docker/machines/cd-iad-peerbelt-$CIRCLE_BUILD_NUM/id_rsa id_rsa-$CIRCLE_BUILD_NUM
         # Pushes the machine private key to S3
         - aws s3 cp ../.docker/machines/cd-iad-peerbelt-$CIRCLE_BUILD_NUM/id_rsa s3://devops-peerbelt/ec2-keys/CD/id_rsa_$CIRCLE_BUILD_NUM 
+        - aws s3 cp ../.docker/machines/cd-iad-peerbelt-$CIRCLE_BUILD_NUM/id_rsa s3://devops-peerbelt/ec2-keys/CD/id_rsa_latest
         #Deploy service containers 
         - /bin/bash -x ./deploy.sh 
