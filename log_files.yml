@@ -1,4 +1,3 @@
-hostname: prod-eu-peerbelt
 files:
   - /var/log/nginx/*.log
   - /var/log/consumer/*.log
