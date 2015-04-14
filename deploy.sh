@@ -59,5 +59,7 @@ ssh -i $ID_RSA root@`./docker-machine ip` 'iptables -A INPUT -i eth0 -j DROP'
 
 # Clean up
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo sed -i s/PermitRootLogin\ yes/PermitRootLogin\ no/g /etc/ssh/sshd_config'
+ssh -i $ID_RSA root@`./docker-machine ip` 'sudo sed -i s/PasswordAuthentication\ yes/PasswordAuthentication\ no/g'
+ssh -i $ID_RSA root@`./docker-machine ip` 'sudo sed -i s/UsePAM\ yes/UsePAM\ no/g'
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo service ssh restart'
 
