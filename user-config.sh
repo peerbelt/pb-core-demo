@@ -2,20 +2,21 @@
 
 
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-
+AWS_S3_BUCKET="$1"
 # Require aws cli to be installed
 if [ "`which aws`" == "" ] ; then
         echo "AWS CLI is not installed, aborting!"
         exit 1
 fi
+
 # Check if lovethis-operations/users exists
-if [ "`aws s3 ls s3://devops-peerbelt/user-keys`" == "" ] ; then
+if [ "`aws s3 ls $AWS_S3_BUCKET`" == "" ] ; then
         echo "Users tree does not exist, aborting!"
         exit 1
 fi
 
 # Get tree from S3
-aws s3 cp s3://devops-peerbelt/user-keys /tmp/peerbelt-users/ --recursive > /dev/null 2>&1;
+aws s3 cp "$AWS_S3_BUCKET" /tmp/peerbelt-users/ --recursive > /dev/null 2>&1;
 
 if [ ! -d /tmp/peerbelt-users ] ; then
         echo "Users tree did not sync, aborting!"

@@ -43,7 +43,7 @@ ssh -i $ID_RSA root@`./docker-machine ip` 'mkdir -p /root/.aws'
 ssh -i $ID_RSA root@`./docker-machine ip` 'apt-get -y install awscli'
 scp -i $ID_RSA config root@`./docker-machine ip`:/root/.aws/config
 ssh -i $ID_RSA root@`./docker-machine ip` 'chmod 755 /tmp/user-config.sh'
-ssh -i $ID_RSA root@`./docker-machine ip` 'sudo /tmp/user-config.sh'
+ssh -i $ID_RSA root@`./docker-machine ip` 'sudo /tmp/user-config.sh s3://devops-peerbelt/user-keys-rs/'
 
 # Start Papertrail
 ssh -i ../.docker/machines/cd-iad-peerbelt-$CIRCLE_BUILD_NUM/id_rsa root@`./docker-machine ip`  'sudo chmod 755 /etc/init.d/remote_syslog'

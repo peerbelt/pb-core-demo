@@ -87,7 +87,7 @@ deployment:
         - ssh -i ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo apt-get -y install awscli'
         - scp -i ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa config ubuntu@`./docker-machine ip`:/home/ubuntu/.aws/config
         - ssh -i ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'chmod 755 /tmp/user-config.sh'
-        - ssh -i ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo /tmp/user-config.sh'
+        - ssh -i ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo /tmp/user-config.sh "s3://devops-peerbelt/user-keys"'
         # Start Papertrail
         - ssh -i ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo service remote_syslog start' 
         # Clean up
