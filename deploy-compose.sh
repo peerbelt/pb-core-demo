@@ -13,7 +13,7 @@ ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /tmp/elasticsearc
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker run -d --name pb_elasticsearch peerbelt/elasticsearch'
 
 # Copies the services and Nginx config to the new EC2
-ssh -i $ID_RSA ubuntu@`./docker-machine ip` 'sudo mkdir -p /var/log/console-api/ /var/log/consumer/ /var/log/tracking-api /var/log/digest'
+ssh -i $ID_RSA root@`./docker-machine ip` 'sudo mkdir -p /var/log/console-api/ /var/log/consumer/ /var/log/tracking-api /var/log/digest'
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo apt-get install -y nginx; sudo rm -rf /etc/nginx/sites-enabled/default'
 scp -i $ID_RSA pb-core-saas-website-latest.tar root@`./docker-machine ip`:/tmp
 scp -i $ID_RSA pb-core-console-latest.tar root@`./docker-machine ip`:/tmp
