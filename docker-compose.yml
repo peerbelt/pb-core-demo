@@ -1,0 +1,46 @@
+cassandra:
+  image: peerbelt/cassandra
+
+elasticsearch:
+  image: peerbelt/elasticsearch
+  ports:
+    - "9200:9200"
+
+console:
+  image: peerbelt/pb-core-console
+  ports:
+    - "44444:80"
+
+consoleapi:
+  image: peerbelt/pb-core-console-api
+  ports:
+    - "33333:3000"
+
+saas:
+  image: peerbelt/pb-core-saas-website
+  ports:
+    - "44445:80"
+
+trackingapi:
+  image: peerbelt/pb-core-tracking-api
+  ports:
+    - "22222:3001"
+  links:
+    - cassandra:pb_cassandra
+
+consumerapi:
+  image: peerbelt/pb-core-consumer-api
+  ports:
+    - "11111:3000"
+  links:
+    - elasticsearch:pb_elasticsearch
+
+digest:
+  image: peerbelt/pb-core-digest
+  links:
+    - elasticsearch:pb_elasticsearch
+    - cassandra:pb_cassandra
+
+
+
+
