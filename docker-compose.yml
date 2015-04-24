@@ -15,6 +15,8 @@ consoleapi:
   image: peerbelt/pb-core-console-api
   ports:
     - "33333:3000"
+  volumes:
+    - /var/log/console-api:/var/log/console-api/
 
 saas:
   image: peerbelt/pb-core-saas-website
@@ -27,6 +29,8 @@ trackingapi:
     - "22222:3001"
   links:
     - cassandra:pb_cassandra
+  volumes:
+    - /var/log/tracking-api:/var/log/tracking-api/
 
 consumerapi:
   image: peerbelt/pb-core-consumer-api
@@ -34,12 +38,16 @@ consumerapi:
     - "11111:3000"
   links:
     - elasticsearch:pb_elasticsearch
-
+  volumes:
+    - /var/log/consumer:/var/log/consumer/
+  
 digest:
   image: peerbelt/pb-core-digest
   links:
     - elasticsearch:pb_elasticsearch
     - cassandra:pb_cassandra
+  volumes:
+    - /var/log/digest:/var/log/digest/
 
 
 
