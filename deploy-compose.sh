@@ -26,10 +26,17 @@ ssh -i $ID_RSA root@`./docker-machine ip` 'sudo  ln -s  /etc/nginx/sites-availab
 
 # Starts the services
 
+ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /tmp/pb-core-saas-website-latest.tar'
+ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /tmp/pb-core-console-latest.tar'
+ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /tmp/pb-core-console-api-latest.tar'
+ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /tmp/pb-core-tracking-api-latest.tar'
+ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /tmp/pb-core-consumer-api-latest.tar'
+ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /tmp/pb-core-digest-latest.tar'
 ssh -i $ID_RSA root@`./docker-machine ip` 'curl -L https://github.com/docker/compose/releases/download/1.2.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose'
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo chmod +x /usr/local/bin/docker-compose'
 scp -i $ID_RSA docker-compose.yml root@`./docker-machine ip`:/tmp
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker-compose --file /tmp/docker-compose.yml up -d' 
+ssh -i $ID_RSA root@`./docker-machine ip` 'sudo service nginx restart'
 
 # Create Team memebers accounts and get keys frm S3
 scp -i $ID_RSA user-config.sh root@`./docker-machine ip`:/tmp
