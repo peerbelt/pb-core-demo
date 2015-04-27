@@ -1,0 +1,29 @@
+cassandra:
+  image: peerbelt/cassandra
+
+elasticsearch:
+  image: peerbelt/elasticsearch
+  ports:
+    - "9200:9200"
+
+trackingapi:
+  image: peerbelt_trackingapi
+  ports:
+    - "22222:3001"
+  links:
+    - cassandra:pb_cassandra
+  volumes:
+    - /var/log/tracking-api:/var/log/tracking-api/
+
+consumerapi:
+  image: peerbelt_consumerapi
+  ports:
+    - "11111:3000"
+  links:
+    - elasticsearch:pb_elasticsearch
+  volumes:
+    - /var/log/consumer:/var/log/consumer/
+  
+
+
+
