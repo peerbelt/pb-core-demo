@@ -8,7 +8,7 @@ USER_DIR=/tmp
 scp -i $ID_RSA pb-cassandra-entrypoint.tar root@`./docker-machine ip`:/tmp
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /tmp/pb-cassandra-entrypoint.tar'
 scp -i $ID_RSA elasticsearch.tar root@`./docker-machine ip`:/tmp
-ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /tmp/elasticsearch.tar'
+ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /tmp/elastic-dummy.tar'
 
 # Copies the services and Nginx config to the new EC2
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo mkdir -p /var/log/console-api/ /var/log/consumer/ /var/log/tracking-api /var/log/digest'
