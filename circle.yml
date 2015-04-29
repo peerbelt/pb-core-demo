@@ -25,7 +25,7 @@ deployment:
        
         # Pushes the machine private key to S3
         - aws s3 cp ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa s3://devops-peerbelt/ec2-keys/CD/id_rsa_$CIRCLE_BUILD_NUM
-        - aws s3 cp ../.docker/machines/cd-iad-peerbelt-$CIRCLE_BUILD_NUM/id_rsa s3://devops-peerbelt/ec2-keys/CD/id_rsa_latest
+        - aws s3 cp ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa s3://devops-peerbelt/ec2-keys/CD/id_rsa_latest
 
         # Create Team memebers and AWS accounts and get keys from S3
         - scp -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa user-config.sh ubuntu@`./docker-machine ip`:/tmp
