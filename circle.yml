@@ -25,7 +25,7 @@ deployment:
        
         # Pushes the machine private key to S3
         - aws s3 cp ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa s3://devops-peerbelt/ec2-keys/CD/id_rsa_$CIRCLE_BUILD_NUM
-        - aws s3 cp ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa s3://devops-peerbelt/ec2-keys/CD/id_rsa_latest
+        - aws s3 cp ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa s3://devops-peerbelt/ec2-keys/CD/id_rsa_latest
 
         # Create Team memebers and AWS accounts and get keys from S3
         - scp -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa user-config.sh ubuntu@`./docker-machine ip`:/tmp
@@ -53,4 +53,7 @@ deployment:
         
         # Configure Papertrail
         - scp -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa log_files.yml ubuntu@`./docker-machine ip`:/home/ubuntu
-        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo mv /home/ubuntu/log_files.yml /etc/log_files.yml; sudo service remote_syslog restart' 
+        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo mv /home/ubuntu/log_files.yml /etc/log_files.yml; sudo service remote_syslog restart'
+     
+        # Post deployment Tests
+         
