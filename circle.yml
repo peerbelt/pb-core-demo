@@ -14,84 +14,43 @@ dependencies:
     - chmod 755 docker-machine
     - sed -i "s/AWS_KEY/$AWS_ACCESS_KEY_ID/g" config
     - sed -i "s|AWS_SECRET|$AWS_SECRET_ACCESS_KEY|g" config
-  override:
-    - docker info
-    - aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-saas-website-latest.tar . 
-    - aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-console-latest.tar .
-    - aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-console-api-latest.tar . 
-    - aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-tracking-api-latest.tar .
-#    - aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-consumer-api-latest.tar .
-#    - aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-digest-latest.tar .
-    - aws s3 cp s3://devops-peerbelt/machines/CD/elasticsearch.tar .
-    - docker load -i pb-core-saas-website-latest.tar
-    - docker load -i pb-core-console-latest.tar
-    - docker load -i pb-core-console-api-latest.tar
-    - docker load -i pb-core-tracking-api-latest.tar
-#    - docker load -i pb-core-consumer-api-latest.tar
-#    - docker load -i pb-core-digest-latest.tar
-
-test:
-  override:
-    - docker run -d -p 44444:80 peerbelt/pb-core-saas-website
-    - docker run -d -p 44445:80 peerbelt/pb-core-console
-    - docker run -d -p 33333:3000 peerbelt/pb-core-console-api
-    - docker run -d -p 22222:3001 peerbelt/pb-core-tracking-api 
-#    - docker run -d -p 11111:3001 peerbelt/pb-core-consumer-api
-#    - docker run -d peerbelt/pb-core-digest
-    - curl --retry 10 --retry-delay 5 -v http://localhost:44444
-    - curl --retry 10 --retry-delay 5 -v http://localhost:44445
 
 deployment:
-    staging:
-      branch: [master, cd]
+    production:
+      branch: [master]
       commands:
+        
         # Creates the EC2 instance
         - ./docker-machine create --driver amazonec2 --amazonec2-region "eu-west-1" --amazonec2-access-key $AWS_ACCESS_KEY_ID --amazonec2-secret-key $AWS_SECRET_ACCESS_KEY --amazonec2-vpc-id vpc-65975600 --amazonec2-instance-type "m1.small" --amazonec2-ami ami-a72bb2d0 --amazonec2-root-size "20" prod-eu-peerbelt-$CIRCLE_BUILD_NUM
+       
         # Pushes the machine private key to S3
         - aws s3 cp ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa s3://devops-peerbelt/ec2-keys/CD/id_rsa_$CIRCLE_BUILD_NUM
-        # Install Cassandra and Elastic Search images
-        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker run -d --name pb_cassandra spotify/cassandra:latest'
-        - scp -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa elasticsearch.tar ubuntu@`./docker-machine ip`:/home/ubuntu
-        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker load -i /home/ubuntu/elasticsearch.tar'
-        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker run -d --name pb_elasticsearch -p 9200:9200 peerbelt/elasticsearch'
-#        - scp -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa elastic_conf.sh ubuntu@`./docker-machine ip`:/tmp/elastic_conf.sh
-#        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo bash -x /tmp/elastic_conf.sh'
-        # Copies the services and Nginx config to the new EC2
-        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo mkdir -p /var/log/console-api/ /var/log/consumer/ /var/log/tracking-api /var/log/digest'
-        - scp -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa pb-core-saas-website-latest.tar ubuntu@`./docker-machine ip`:/home/ubuntu
-        - scp -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa pb-core-console-latest.tar ubuntu@`./docker-machine ip`:/home/ubuntu
-        - scp -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa pb-core-console-api-latest.tar ubuntu@`./docker-machine ip`:/home/ubuntu
-        - scp -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa pb-core-tracking-api-latest.tar ubuntu@`./docker-machine ip`:/home/ubuntu
-#        - scp -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa pb-core-consumer-api-latest.tar ubuntu@`./docker-machine ip`:/home/ubuntu
-#        - scp -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa pb-core-digest-latest.tar ubuntu@`./docker-machine ip`:/home/ubuntu
-        - scp -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa pb_services.nginx ubuntu@`./docker-machine ip`:/home/ubuntu/pb_services.nginx
-        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo mv /home/ubuntu/pb_services.nginx /etc/nginx/sites-available/pb_services.nginx'
-        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo  ln -s  /etc/nginx/sites-available/pb_services.nginx /etc/nginx/sites-enabled/pb_services.nginx'
-        # Starts the services
-        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker load -i /home/ubuntu/pb-core-saas-website-latest.tar'
-        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker load -i /home/ubuntu/pb-core-console-latest.tar'
-        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker load -i /home/ubuntu/pb-core-console-api-latest.tar'
-        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker load -i /home/ubuntu/pb-core-tracking-api-latest.tar'
-#        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker load -i /home/ubuntu/pb-core-consumer-api-latest.tar'
-#        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker load -i /home/ubuntu/pb-core-digest-latest.tar'
-        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker run --name pb-core-saas-website -d -p 44445:80 peerbelt/pb-core-saas-website'
-        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker run --name pb-core-console -d -p 44444:80 peerbelt/pb-core-console'
-        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker run --name pb-core-console-api -d -p 33333:3000  peerbelt/pb-core-console-api'
-        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker run --name pb-core-tracking-api -d -p 22222:3001 --link pb_cassandra:pb_cassandra peerbelt/pb-core-tracking-api'
-#        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker run --name pb-core-consumer-api -d -p 11111:3000 --link pb_elasticsearch:pb_elasticsearch peerbelt/pb-core-consumer-api'
-#        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker run --name pb-core-digest -d --link pb_cassandra:pb_cassandra --link pb_elasticsearch:pb_elasticsearch peerbelt/pb-core-digest'
-        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo service nginx restart'
-        # Create Team memebers accounts and get keys frm S3
+        - aws s3 cp ../.docker/machines/cd-iad-peerbelt-$CIRCLE_BUILD_NUM/id_rsa s3://devops-peerbelt/ec2-keys/CD/id_rsa_latest
+
+        # Create Team memebers and AWS accounts and get keys from S3
         - scp -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa user-config.sh ubuntu@`./docker-machine ip`:/tmp
         - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'mkdir -p /home/ubuntu/.aws'
         - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo apt-get -y install awscli'
         - scp -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa config ubuntu@`./docker-machine ip`:/home/ubuntu/.aws/config
         - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'chmod 755 /tmp/user-config.sh'
         - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo /tmp/user-config.sh'
+        
+        # Transfer services to EC2
+        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-saas-website-latest.tar .'
+        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-console-latest.tar .'
+        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-console-api-latest.tar .'
+        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo url -L https://github.com/docker/compose/releases/download/1.2.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose'
+        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo chmod +x /usr/local/bin/docker-compose'
+        - scp -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa docker-compose.yml ubuntu@`./docker-machine ip`:/home/ubuntu
+        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker-compose --file /home/ubuntu/docker-compose.yml up -d' 
+        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo service nginx restart'
+
         # Start Papertrail
         - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo service remote_syslog start' 
+        
         # Clean up
         - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo rm -rf /home/ubuntu/pb* '
+        
         # Configure Papertrail
         - scp -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa log_files.yml ubuntu@`./docker-machine ip`:/home/ubuntu
         - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo mv /home/ubuntu/log_files.yml /etc/log_files.yml; sudo service remote_syslog restart' 
