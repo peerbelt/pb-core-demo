@@ -39,9 +39,9 @@ deployment:
         - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-saas-website-latest.tar .'
         - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-console-latest.tar .'
         - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-console-api-latest.tar .'
-        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` ubuntu@`./docker-machine ip` 'sudo docker load -i /home/ubuntu/pb-core-saas-website-latest.tar'
-        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` ubuntu@`./docker-machine ip` 'sudo docker load -i /home/ubuntu/pb-core-console-latest.tar'
-        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` ubuntu@`./docker-machine ip` 'sudo docker load -i /home/ubuntu/pb-core-console-api-latest.tar'
+        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker load -i /home/ubuntu/pb-core-saas-website-latest.tar'
+        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker load -i /home/ubuntu/pb-core-console-latest.tar'
+        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo docker load -i /home/ubuntu/pb-core-console-api-latest.tar'
         - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'curl -L https://github.com/docker/compose/releases/download/1.2.0/docker-compose-`uname -s`-`uname -m` > docker-compose'
         - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo chmod +x docker-compose'
         - scp -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa docker-compose.yml ubuntu@`./docker-machine ip`:/home/ubuntu
