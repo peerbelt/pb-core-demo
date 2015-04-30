@@ -17,7 +17,7 @@ consoleapi:
     - "33333:3000"
   volumes:
     - /var/log/console-api:/var/log/console-api/
-
+    - /var/data/console-api:/home/pb-core-console-api/data
 saas:
   image: peerbelt/pb-core-saas-website
   ports:
