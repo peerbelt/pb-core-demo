@@ -44,32 +44,3 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
-
-server {
-    listen 80;
-    server_name cd-eu-tracking.peerbelt.link;
-    access_log /var/log/nginx/tracking-pb-access.log;
-    error_log /var/log/nginx/tracking-pb-error.log;
-    location / {
-        proxy_pass http://localhost:22222;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-}
-
-server {
-    listen 80;
-    server_name cd-eu-consumer.peerbelt.link;
-    access_log /var/log/nginx/consumer-pb-access.log;
-    error_log /var/log/nginx/consumer-pb-error.log;
-    location / {
-        proxy_pass http://localhost:11111;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-}
-
