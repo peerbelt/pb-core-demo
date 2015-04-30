@@ -15,6 +15,10 @@ dependencies:
     - sed -i "s/AWS_KEY/$AWS_ACCESS_KEY_ID/g" config
     - sed -i "s|AWS_SECRET|$AWS_SECRET_ACCESS_KEY|g" config
 
+test:
+  override:
+    - docker info
+
 deployment:
     production:
       branch: [master]
