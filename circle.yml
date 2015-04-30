@@ -38,7 +38,12 @@ deployment:
         - scp -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa config ubuntu@`./docker-machine ip`:/home/ubuntu/.aws/config
         - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'chmod 755 /tmp/user-config.sh'
         - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo /tmp/user-config.sh'
-        
+       
+        # Configure Nginx
+        - scp -i ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa pb_services.nginx ubuntu@`./docker-machine ip`:/home/ubuntu/pb_services.nginx
+        - ssh -i ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo mv /home/ubuntu/pb_services.nginx /etc/nginx/sites-available/pb_services.nginx'
+        - ssh -i ../.docker/machines/cd-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo ln -s /etc/nginx/sites-available/pb_services.nginx /etc/nginx/sites-enabled/pb_services.nginx' 
+
         # Transfer services to EC2
         - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-saas-website-latest.tar .'
         - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-console-latest.tar .'
