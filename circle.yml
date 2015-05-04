@@ -57,14 +57,14 @@ deployment:
         - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo /home/ubuntu/docker-compose --file /home/ubuntu/docker-compose.yml up -d' 
         - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo service nginx restart'
 
-        # Start Papertrail
-        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo service remote_syslog start' 
         
         # Clean up
         - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo rm -rf /home/ubuntu/pb* '
         
         # Configure Papertrail
         - scp -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa log_files.yml ubuntu@`./docker-machine ip`:/home/ubuntu
+        - scp -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa rsyslog.conf ubuntu@`./docker-machine ip`:/home/ubuntu
+        - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo mv /home/ubuntu/rsyslog.conf /etc/rsyslog.conf; sudo service rsyslog restart'
         - ssh -i ../.docker/machines/prod-eu-peerbelt-$CIRCLE_BUILD_NUM/id_rsa ubuntu@`./docker-machine ip` 'sudo mv /home/ubuntu/log_files.yml /etc/log_files.yml; sudo service remote_syslog restart'
      
         # Post deployment Tests
