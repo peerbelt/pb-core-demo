@@ -2,10 +2,11 @@ elasticsearch:
   image: peerbelt/elastic-dummy
   ports:
     - "9200:9200"
+    - command: /bin/bash -c sleep 60
 
 cassandra:
   image: peerbelt/cassandra
-
+  command: /bin/bash -c sleep 60
 console:
   image: peerbelt/pb-core-console
   ports:
