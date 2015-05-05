@@ -33,13 +33,11 @@ ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /tmp/pb-core-cons
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /tmp/pb-core-digest-latest.tar'
 ssh -i $ID_RSA root@`./docker-machine ip` 'curl -L https://github.com/docker/compose/releases/download/1.2.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose'
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo chmod +x /usr/local/bin/docker-compose'
+#scp -i $ID_RSA docker-compose-cassandra-elastic.yml root@`./docker-machine ip`:/tmp
 scp -i $ID_RSA docker-compose.yml root@`./docker-machine ip`:/tmp
+#ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker-compose --file docker-compose-cassandra-elastic.yml up -d'
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker-compose --file /tmp/docker-compose.yml up -d' 
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo service nginx restart'
-
-# Restart containers, because ElasticSearch takes too long to start up:
-ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker-compose --file /tmp/docker-compose.yml restart consumerapi'
-ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker-compose --file /tmp/docker-compose.yml restart digest'
 
 # Create Team memebers accounts and get keys frm S3
 scp -i $ID_RSA user-config.sh root@`./docker-machine ip`:/tmp
@@ -59,6 +57,11 @@ ssh -i ../.docker/machines/cd-iad-peerbelt-$CIRCLE_BUILD_NUM/id_rsa root@`./dock
 scp -i $ID_RSA nrsysmond.cfg root@`./docker-machine ip`:/tmp
 ssh -i $ID_RSA root@`./docker-machine ip` 'mv /tmp/nrsysmond.cfg /etc/newrelic/nrsysmond.cfg'
 ssh -i $ID_RSA root@`./docker-machine ip` 'service newrelic-sysmond start'
+
+# Restart containers, because ElasticSearch takes too long to start up:
+ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker-compose --file /tmp/docker-compose.yml restart consumerapi'
+ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker-compose --file /tmp/docker-compose.yml restart digest'
+
 
 #Configure iptables
 ssh -i $ID_RSA root@`./docker-machine ip` 'iptables -A INPUT -i eth0 -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT'
