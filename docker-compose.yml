@@ -28,7 +28,7 @@ trackingapi:
   ports:
     - "22222:3001"
   links:
-    - cassandra
+    - tmp_cassandra_1:cassandra
   volumes:
     - /var/log/tracking-api:/var/log/tracking-api/
 
@@ -37,15 +37,15 @@ consumerapi:
   ports:
     - "11111:3000"
   links:
-    - elasticsearch
+    - tmp_elasticsearch_1:elasticsearch
   volumes:
     - /var/log/consumer:/var/log/consumer/
   
 digest:
   image: peerbelt/pb-core-digest
   links:
-    - elasticsearch
-    - cassandra
+    - tmp_elasticsearch_1:elasticsearch
+    - tmp_cassandra_1:cassandra
   volumes:
     - /var/log/digest:/var/log/digest/
 
