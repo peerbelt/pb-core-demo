@@ -38,8 +38,8 @@ ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker-compose --file /tmp/docke
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo service nginx restart'
 
 # Restart containers, because ElasticSearch takes too long to start up:
-ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker-compose restart consumerapi'
-ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker-compose restart digest'
+ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker-compose --file /tmp/docker-compose.yml restart consumerapi'
+ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker-compose --file /tmp/docker-compose.yml restart digest'
 
 # Create Team memebers accounts and get keys frm S3
 scp -i $ID_RSA user-config.sh root@`./docker-machine ip`:/tmp
