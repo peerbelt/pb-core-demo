@@ -18,6 +18,7 @@ dependencies:
     - sed -i "s|AWS_SECRET|$AWS_SECRET_ACCESS_KEY|g" config
     - sed -i "s/USER/$OS_USERNAME/g" keys.rb
     - sed -i "s/API_KEY/$OS_API_KEY/g" keys.rb
+    - sed "s/license_key\=*/license_key\=$NEWRELIC_NON_PROD/g" nrsysmond.cfg
     - ruby -v
     - gem install fog
   override:
@@ -45,7 +46,7 @@ deployment:
       branch: cd
       commands:
         # Creates the EC2 instance
-        - ./docker-machine create --driver rackspace --rackspace-image-id b9cce513-c8b5-4acd-92d2-74c13f04ea37 --rackspace-flavor-id "general1-2" cd-iad-peerbelt-$CIRCLE_BUILD_NUM
+        - ./docker-machine create --driver rackspace --rackspace-image-id e46ad403-db4b-405a-bbd1-1bc5da9137b5 --rackspace-flavor-id "general1-2" cd-iad-peerbelt-$CIRCLE_BUILD_NUM
         - cp $HOME/.docker/machines/cd-iad-peerbelt-$CIRCLE_BUILD_NUM/id_rsa id_rsa-$CIRCLE_BUILD_NUM
         # Pushes the machine private key to S3
         - aws s3 cp ../.docker/machines/cd-iad-peerbelt-$CIRCLE_BUILD_NUM/id_rsa s3://devops-peerbelt/ec2-keys/CD/id_rsa_$CIRCLE_BUILD_NUM 

@@ -51,6 +51,11 @@ ssh -i $ID_RSA root@`./docker-machine ip` 'chmod 400 /etc/sudoers.d/rackspace_us
 ssh -i ../.docker/machines/cd-iad-peerbelt-$CIRCLE_BUILD_NUM/id_rsa root@`./docker-machine ip`  'sudo chmod 755 /etc/init.d/remote_syslog'
 ssh -i ../.docker/machines/cd-iad-peerbelt-$CIRCLE_BUILD_NUM/id_rsa root@`./docker-machine ip` 'sudo service remote_syslog start'
 
+# Start NewRelic
+scp -i $ID_RSA nrsysmond.cfg root@`./docker-machine ip`:/tmp
+ssh -i $ID_RSA root@`./docker-machine ip` 'mv /tmp/nrsysmond.cfg /etc/newrelic/nrsysmond.cfg'
+ssh -i $ID_RSA root@`./docker-machine ip` 'service newrelic-sysmond start'
+
 #Configure iptables
 ssh -i $ID_RSA root@`./docker-machine ip` 'iptables -A INPUT -i eth0 -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT'
 ssh -i $ID_RSA root@`./docker-machine ip` 'iptables -A INPUT -i eth0 -p tcp --dport 443 -m state --state NEW,ESTABLISHED -j ACCEPT'
