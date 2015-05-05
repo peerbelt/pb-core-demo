@@ -1,3 +1,11 @@
+elasticsearch:
+  image: peerbelt/elastic-dummy
+  ports:
+    - "9200:9200"
+
+cassandra:
+  image: peerbelt/cassandra
+
 console:
   image: peerbelt/pb-core-console
   ports:
