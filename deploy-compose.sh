@@ -35,6 +35,7 @@ ssh -i $ID_RSA root@`./docker-machine ip` 'chmod 400 /etc/sudoers.d/rackspace_us
 
 # Clone the setting repo create cronjobs for Chef-solo
 ssh -i $ID_RSA root@`./docker-machine ip` 'aws s3 cp s3://devops-peerbelt/rackspace-git-deploy-key/id_rsa .ssh/id_rsa; chmod 400 /root/.ssh/id_rsa'
+scp -i $ID_RSA known_hosts root@`./docker-machine ip`:/root/.ssh/known_hosts
 scp -i $ID_RSA solo.rb root@`./docker-machine ip`:/var/data
 scp -i $ID_RSA node.json root@`./docker-machine ip`:/var/data
 scp -i $ID_RSA cronjobs.txt root@`./docker-machine ip`:/var/data
@@ -42,7 +43,7 @@ ssh -i $ID_RSA root@`./docker-machine ip` 'mkdir -p /var/data/cookbooks/settings
 scp -i $ID_RSA default.rb root@`./docker-machine ip`:/var/data/cookbooks/settings/recipies/
 ssh -i $ID_RSA root@`./docker-machine ip` 'cd /var/data/; git clone git@github.com:peerbelt/pb-settings-demo.git'
 ssh -i $ID_RSA root@`./docker-machine ip` '/bin/bash -x /var/data/pb-settings-demo/git-checker.sh'
-ssh -i $ID_RSA root@`./docker-machine ip` 'chef-solo -c solo.rb'
+ssh -i $ID_RSA root@`./docker-machine ip` 'chef-solo -c /var/data/solo.rb'
 ssh -i $ID_RSA root@`./docker-machine ip` 'crontab /var/data/cronjobs.txt'
 
 # Starts the services
