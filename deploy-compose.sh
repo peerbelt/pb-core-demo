@@ -39,8 +39,8 @@ scp -i $ID_RSA known_hosts root@`./docker-machine ip`:/root/.ssh/known_hosts
 scp -i $ID_RSA solo.rb root@`./docker-machine ip`:/var/data
 scp -i $ID_RSA node.json root@`./docker-machine ip`:/var/data
 scp -i $ID_RSA cronjobs.txt root@`./docker-machine ip`:/var/data
-ssh -i $ID_RSA root@`./docker-machine ip` 'mkdir -p /var/data/cookbooks/settings/recipies/'
-scp -i $ID_RSA default.rb root@`./docker-machine ip`:/var/data/cookbooks/settings/recipies/
+ssh -i $ID_RSA root@`./docker-machine ip` 'mkdir -p /var/data/cookbooks/settings/recipes/'
+scp -i $ID_RSA default.rb root@`./docker-machine ip`:/var/data/cookbooks/settings/recipes/
 ssh -i $ID_RSA root@`./docker-machine ip` 'cd /var/data/; git clone git@github.com:peerbelt/pb-settings-demo.git'
 ssh -i $ID_RSA root@`./docker-machine ip` '/bin/bash -x /var/data/pb-settings-demo/git-checker.sh'
 ssh -i $ID_RSA root@`./docker-machine ip` 'chef-solo -c /var/data/solo.rb'

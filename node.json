@@ -1,4 +1,4 @@
 {
-  "run_list": [ "recipe[services-properties]" ]
+  "run_list": [ "recipe[settings]" ]
 }
 
