@@ -45,6 +45,7 @@ for DETAILS in `find -type f` ; do
         else 
                 #Create the user and
                 useradd -s /bin/bash -m $USERNAME -d /home/$USERNAME -p $PASS
+                chown -R $USERNAME:$USERNAME /home/$USERNAME
                 #Add user`s bublic key and configure it.
                 if [ "$USER_HOME" != "" ] ; then
                         mkdir -p $USER_HOME/.ssh > /dev/null 2>&1
