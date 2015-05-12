@@ -34,7 +34,7 @@ scp -i $ID_RSA rackspace_user root@`./docker-machine ip`:/etc/sudoers.d/rackspac
 ssh -i $ID_RSA root@`./docker-machine ip` 'chmod 400 /etc/sudoers.d/rackspace_user'
 
 # Clone the setting repo create cronjobs for Chef-solo
-ssh -i $ID_RSA root@`./docker-machine ip` 'aws s3 cp s3://devops-peerbelt/rackspace-git-deploy-key/id_rsa .ssh/id_rsa; chmod 400 id_rsa'
+ssh -i $ID_RSA root@`./docker-machine ip` 'aws s3 cp s3://devops-peerbelt/rackspace-git-deploy-key/id_rsa .ssh/id_rsa; chmod 400 /root/.ssh/id_rsa'
 scp -i $ID_RSA solo.rb root@`./docker-machine ip`:/var/data
 scp -i $ID_RSA node.json root@`./docker-machine ip`:/var/data
 scp -i $ID_RSA cronjobs.txt root@`./docker-machine ip`:/var/data
