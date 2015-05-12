@@ -1,0 +1,2 @@
+*/5 * * * * /bin/sh /home/rackspace/git-checker.sh
+*/7 * * * * chef-solo -c /home/rackspace/solo.rb
