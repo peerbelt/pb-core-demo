@@ -10,7 +10,7 @@ console:
   image: peerbelt/pb-core-console
   ports:
     - "44444:80"
-
+  
 consoleapi:
   image: peerbelt/pb-core-console-api
   ports:
@@ -20,7 +20,9 @@ consoleapi:
     - /var/data/console-api:/home/pb-core-console-api/data
   environment:
     - NODE_ENV=cd
-    - DEBUG=*    
+    - DEBUG=*
+    - NEW_RELIC_APP_NAME=console
+    - NEW_RELIC_LICENSE_KEY=6b69530bc9d305b58a250460b0defbdb82423859    
 
 saas:
   image: peerbelt/pb-core-saas-website
@@ -35,6 +37,9 @@ trackingapi:
     - cassandra:cassandra
   volumes:
     - /var/log/tracking-api:/var/log/tracking-api/
+  environment:
+    - NEW_RELIC_APP_NAME=console
+    - NEW_RELIC_LICENSE_KEY=6b69530bc9d305b58a250460b0defbdb82423859
 
 consumerapi:
   image: peerbelt/pb-core-consumer-api
@@ -44,6 +49,9 @@ consumerapi:
     - elasticsearch:elasticsearch
   volumes:
     - /var/log/consumer:/var/log/consumer/
+  environment:
+    - NEW_RELIC_APP_NAME=console
+    - NEW_RELIC_LICENSE_KEY=6b69530bc9d305b58a250460b0defbdb82423859
   
 digest:
   image: peerbelt/pb-core-digest
@@ -52,6 +60,9 @@ digest:
     - cassandra:cassandra
   volumes:
     - /var/log/digest:/var/log/digest/
+  environment:
+    - NEW_RELIC_APP_NAME=console
+    - NEW_RELIC_LICENSE_KEY=6b69530bc9d305b58a250460b0defbdb82423859
 
 
 
