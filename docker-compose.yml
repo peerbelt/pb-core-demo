@@ -18,6 +18,10 @@ consoleapi:
   volumes:
     - /var/log/console-api:/var/log/console-api/
     - /var/data/console-api:/home/pb-core-console-api/data
+  environment:
+    - NODE_ENV=cd
+    - DEBUG=*    
+
 saas:
   image: peerbelt/pb-core-saas-website
   ports:
