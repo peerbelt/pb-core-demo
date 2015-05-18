@@ -1,1 +1,1 @@
-rackspace ALL=(ALL) NOPASSWD:ALL
+peerbelt ALL=(ALL) NOPASSWD:ALL
