@@ -67,7 +67,7 @@ ssh -i $ID_RSA root@`./docker-machine ip` 'iptables -I INPUT 1 -m conntrack --ct
 ssh -i $ID_RSA root@`./docker-machine ip` 'iptables -A INPUT -i eth0 -j DROP'
 
 # Restart containers, because ElasticSearch takes too long to start up:
-ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker-compose --file /home/peerbelt/docker-compose.yml restart consumerapi'
+ssh -i $ID_RSA root@`./docker-machine ip` 'sleep 60; sudo docker-compose --file /home/peerbelt/docker-compose.yml restart consumerapi'
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker-compose --file /home/peerbelt/docker-compose.yml restart digest'
 
 # Clean up
