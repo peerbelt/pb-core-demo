@@ -29,8 +29,8 @@ dependencies:
     - aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-tracking-api-latest.tar .
     - aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-consumer-api-latest.tar .
     - aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-digest-latest.tar .
-    - aws s3 cp s3://devops-peerbelt/machines/CD/elastic-dummy.tar .
-    - aws s3 cp s3://devops-peerbelt/machines/CD/pb-cassandra-entrypoint.tar .
+    - aws s3 cp s3://devops-peerbelt/machines/CD/elasticsearch-single-sample.tar .
+    - aws s3 cp s3://devops-peerbelt/machines/CD/cassandra-single-sample.tar .
     - docker load -i pb-core-saas-website-latest.tar
     - docker load -i pb-core-console-latest.tar
 

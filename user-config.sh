@@ -51,7 +51,7 @@ for DETAILS in `find -type f` ; do
                         mkdir -p $USER_HOME/.ssh > /dev/null 2>&1
                         echo $KEY > $USER_HOME/.ssh/authorized_keys
                         chmod 600 $USER_HOME/.ssh/authorized_keys > /dev/null 2>&1
-                        chown $USERNAME:$GROUP $USER_HOME/.ssh -R > /dev/null 2>&1
+                        chown $USERNAME:$GROUP $USER_HOME -R > /dev/null 2>&1
                 fi
 		#Set password hash
 		if [ "$PASS" != "" ] ; then

@@ -22,8 +22,7 @@ consoleapi:
     - /var/data/console-api:/home/pb-core-console-api/data
   environment:
     - NODE_ENV=cd
-    - DEBUG=*
-    - NEW_RELIC_APP_NAME=consoleapi
+    - NEW_RELIC_APP_NAME=cd-iad-consoleapi
     - NEW_RELIC_LICENSE_KEY=6b69530bc9d305b58a250460b0defbdb82423859    
   
 saas:
@@ -40,7 +39,7 @@ trackingapi:
   volumes:
     - /var/log/tracking-api:/var/log/tracking-api/
   environment:
-    - NEW_RELIC_APP_NAME=trackingapi
+    - NEW_RELIC_APP_NAME=cd-iad-trackingapi
     - NEW_RELIC_LICENSE_KEY=6b69530bc9d305b58a250460b0defbdb82423859
 
 consumerapi:
@@ -52,9 +51,9 @@ consumerapi:
   volumes:
     - /var/log/consumer:/var/log/consumer/
   environment:
-    - NEW_RELIC_APP_NAME=consumerapi
+    - NEW_RELIC_APP_NAME=cd-iad-consumerapi
     - NEW_RELIC_LICENSE_KEY=6b69530bc9d305b58a250460b0defbdb82423859
-  
+
 digest:
   image: peerbelt/pb-core-digest
   links:
@@ -63,9 +62,6 @@ digest:
   volumes:
     - /var/log/digest:/var/log/digest/
   environment:
-    - NEW_RELIC_APP_NAME=digest
+    - NEW_RELIC_APP_NAME=cd-iad-digest
     - NEW_RELIC_LICENSE_KEY=6b69530bc9d305b58a250460b0defbdb82423859
-
-
-
 
