@@ -1,6 +1,20 @@
 server {
     listen 80;
-    server_name cd-iad-console.peerbelt.link;
+    server_name cd-iad-www.peerbelt.link saas.peerbelt.link;
+    access_log /var/log/nginx/www-pb-access.log;
+    error_log /var/log/nginx/www-pb-error.log;
+    location / {
+        proxy_pass http://localhost:44445;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+server {
+    listen 80;
+    server_name cd-iad-console.peerbelt.link console.peerbelt.link;
     access_log /var/log/nginx/console-pb-access.log;
     error_log /var/log/nginx/console-pb-error.log;
     location / {
@@ -21,21 +35,7 @@ server {
 
 server {
     listen 80;
-    server_name cd-iad-www.peerbelt.link;
-    access_log /var/log/nginx/www-pb-access.log;
-    error_log /var/log/nginx/www-pb-error.log;
-    location / {
-        proxy_pass http://localhost:44445;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-}
-
-server {
-    listen 80;
-    server_name cd-iad-tracking.peerbelt.link;
+    server_name cd-iad-tracking.peerbelt.link tracking.peerbelt.link;
     access_log /var/log/nginx/tracking-pb-access.log;
     error_log /var/log/nginx/tracking-pb-error.log;
     location / {
@@ -49,7 +49,7 @@ server {
 
 server {
     listen 80;
-    server_name cd-iad-consumer.peerbelt.link;
+    server_name cd-iad-consumer.peerbelt.link consumer.peerbelt.link;
     access_log /var/log/nginx/consumer-pb-access.log;
     error_log /var/log/nginx/consumer-pb-error.log;
     location / {
@@ -60,4 +60,3 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
-
