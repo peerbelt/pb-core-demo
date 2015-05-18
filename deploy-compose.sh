@@ -4,12 +4,12 @@ ID_RSA=/home/ubuntu/.docker/machines/cd-iad-peerbelt-$CIRCLE_BUILD_NUM/id_rsa
 USER_DIR=/home/peerbelt
 
 # Create Team memebers accounts and get keys frm S3
-scp -i $ID_RSA user-config.sh root@`./docker-machine ip`:/home/peerbelt
+scp -i $ID_RSA user-config.sh root@`./docker-machine ip`:/tmp
 ssh -i $ID_RSA root@`./docker-machine ip` 'mkdir -p /root/.aws'
 ssh -i $ID_RSA root@`./docker-machine ip` 'apt-get -y install awscli'
 scp -i $ID_RSA config root@`./docker-machine ip`:/root/.aws/config
-ssh -i $ID_RSA root@`./docker-machine ip` 'chmod 755 /home/peerbelt/user-config.sh'
-ssh -i $ID_RSA root@`./docker-machine ip` 'sudo /home/peerbelt/user-config.sh s3://devops-peerbelt/user-keys-rs/'
+ssh -i $ID_RSA root@`./docker-machine ip` 'chmod 755 /tmp/user-config.sh'
+ssh -i $ID_RSA root@`./docker-machine ip` 'sudo /tmp/user-config.sh s3://devops-peerbelt/user-keys-rs/'
 scp -i $ID_RSA rackspace_user root@`./docker-machine ip`:/etc/sudoers.d/rackspace_user
 ssh -i $ID_RSA root@`./docker-machine ip` 'chmod 400 /etc/sudoers.d/rackspace_user'
 
