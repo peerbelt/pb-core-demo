@@ -1,13 +1,3 @@
-cassandra:
-  image: peerbelt/cassandra
-  restart: always
-
-elasticsearch:
-  image: peerbelt/elastic-dummy
-  ports:
-    - "9200:9200"
-  restart: always
-
 console:
   image: peerbelt/pb-core-console
   ports:
@@ -39,36 +29,11 @@ trackingapi:
   image: peerbelt/pb-core-tracking-api
   ports:
     - "22222:3001"
-  links:
-    - cassandra:cassandra
   volumes:
     - /var/log/tracking-api:/var/log/tracking-api/
   environment:
     - NEW_RELIC_APP_NAME=cd-iad-trackingapi
     - NEW_RELIC_LICENSE_KEY=6b69530bc9d305b58a250460b0defbdb82423859
+    - CASSANDRA_HOST="10.223.242.77,10.223.242.167,10.223.240.127"
   restart: always
 
-consumerapi:
-  image: peerbelt/pb-core-consumer-api
-  ports:
-    - "11111:3000"
-  links:
-    - elasticsearch:elasticsearch
-  volumes:
-    - /var/log/consumer:/var/log/consumer/
-  environment:
-    - NEW_RELIC_APP_NAME=cd-iad-consumerapi
-    - NEW_RELIC_LICENSE_KEY=6b69530bc9d305b58a250460b0defbdb82423859
-  restart: always
-  
-  digest:
-  image: peerbelt/pb-core-digest
-  links:
-    - elasticsearch:elasticsearch
-    - cassandra:cassandra
-  volumes:
-    - /var/log/digest:/var/log/digest/
-  environment:
-    - NEW_RELIC_APP_NAME=cd-iad-digest
-    - NEW_RELIC_LICENSE_KEY=6b69530bc9d305b58a250460b0defbdb82423859
-  restart: always

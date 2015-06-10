@@ -15,10 +15,10 @@ ssh -i $ID_RSA root@`./docker-machine ip` 'chmod 400 /etc/sudoers.d/rackspace_us
 
 
 # Install Cassandra and Elastic Search images
-scp -i $ID_RSA cassandra-single-sample.tar root@`./docker-machine ip`:/home/peerbelt
-ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /home/peerbelt/cassandra-single-sample.tar'
-scp -i $ID_RSA elasticsearch-single-sample.tar root@`./docker-machine ip`:/home/peerbelt
-ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /home/peerbelt/elasticsearch-single-sample.tar'
+#scp -i $ID_RSA cassandra-single-sample.tar root@`./docker-machine ip`:/home/peerbelt
+#ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /home/peerbelt/cassandra-single-sample.tar'
+#scp -i $ID_RSA elasticsearch-single-sample.tar root@`./docker-machine ip`:/home/peerbelt
+#ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /home/peerbelt/elasticsearch-single-sample.tar'
 
 # Copies the services and Nginx config to the new EC2
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo mkdir -p /var/log/console-api/ /var/log/consumer/ /var/log/tracking-api /var/log/digest /var/data/console-api'
@@ -27,8 +27,8 @@ scp -i $ID_RSA pb-core-saas-website-latest.tar root@`./docker-machine ip`:/home/
 scp -i $ID_RSA pb-core-console-latest.tar root@`./docker-machine ip`:/home/peerbelt
 scp -i $ID_RSA pb-core-console-api-latest.tar root@`./docker-machine ip`:/home/peerbelt
 scp -i $ID_RSA pb-core-tracking-api-latest.tar root@`./docker-machine ip`:/home/peerbelt
-scp -i $ID_RSA pb-core-consumer-api-latest.tar root@`./docker-machine ip`:/home/peerbelt
-scp -i $ID_RSA pb-core-digest-latest.tar root@`./docker-machine ip`:/home/peerbelt
+#scp -i $ID_RSA pb-core-consumer-api-latest.tar root@`./docker-machine ip`:/home/peerbelt
+#scp -i $ID_RSA pb-core-digest-latest.tar root@`./docker-machine ip`:/home/peerbelt
 scp -i $ID_RSA pb_services.nginx root@`./docker-machine ip`:/home/peerbelt/pb_services.nginx
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo mv /home/peerbelt/pb_services.nginx /etc/nginx/sites-available/pb_services.nginx'
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo  ln -s  /etc/nginx/sites-available/pb_services.nginx /etc/nginx/sites-enabled/pb_services.nginx'
@@ -39,13 +39,11 @@ ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /home/peerbelt/pb
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /home/peerbelt/pb-core-console-latest.tar'
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /home/peerbelt/pb-core-console-api-latest.tar'
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /home/peerbelt/pb-core-tracking-api-latest.tar'
-ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /home/peerbelt/pb-core-consumer-api-latest.tar'
-ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /home/peerbelt/pb-core-digest-latest.tar'
+#ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /home/peerbelt/pb-core-consumer-api-latest.tar'
+#ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /home/peerbelt/pb-core-digest-latest.tar'
 ssh -i $ID_RSA root@`./docker-machine ip` 'curl -L https://github.com/docker/compose/releases/download/1.2.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose'
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo chmod +x /usr/local/bin/docker-compose'
-#scp -i $ID_RSA docker-compose-cassandra-elastic.yml root@`./docker-machine ip`:/home/peerbelt
 scp -i $ID_RSA docker-compose.yml root@`./docker-machine ip`:/home/peerbelt
-#ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker-compose --file docker-compose-cassandra-elastic.yml up -d'
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker-compose --file /home/peerbelt/docker-compose.yml up -d' 
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo service nginx restart'
 
@@ -67,8 +65,8 @@ ssh -i $ID_RSA root@`./docker-machine ip` 'iptables -I INPUT 1 -m conntrack --ct
 ssh -i $ID_RSA root@`./docker-machine ip` 'iptables -A INPUT -i eth0 -j DROP'
 
 # Restart containers, because ElasticSearch takes too long to start up:
-ssh -i $ID_RSA root@`./docker-machine ip` 'sleep 60; sudo docker-compose --file /home/peerbelt/docker-compose.yml restart consumerapi'
-ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker-compose --file /home/peerbelt/docker-compose.yml restart digest'
+#ssh -i $ID_RSA root@`./docker-machine ip` 'sleep 60; sudo docker-compose --file /home/peerbelt/docker-compose.yml restart consumerapi'
+#ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker-compose --file /home/peerbelt/docker-compose.yml restart digest'
 
 # Clean up
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo sed -i s/PermitRootLogin\ yes/PermitRootLogin\ no/g /etc/ssh/sshd_config'

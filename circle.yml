@@ -27,10 +27,10 @@ dependencies:
     - aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-console-latest.tar .
     - aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-console-api-latest.tar . 
     - aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-tracking-api-latest.tar .
-    - aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-consumer-api-latest.tar .
-    - aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-digest-latest.tar .
-    - aws s3 cp s3://devops-peerbelt/machines/CD/elasticsearch-single-sample.tar .
-    - aws s3 cp s3://devops-peerbelt/machines/CD/cassandra-single-sample.tar .
+#    - aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-consumer-api-latest.tar .
+#    - aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-digest-latest.tar .
+#    - aws s3 cp s3://devops-peerbelt/machines/CD/elasticsearch-single-sample.tar .
+#    - aws s3 cp s3://devops-peerbelt/machines/CD/cassandra-single-sample.tar .
     - docker load -i pb-core-saas-website-latest.tar
     - docker load -i pb-core-console-latest.tar
 
@@ -43,7 +43,7 @@ test:
 
 deployment:
     staging:
-      branch: cd
+      branch: [cd,prod]
       commands:
         # Creates the EC2 instance
         - ./docker-machine create --driver rackspace --rackspace-image-id e46ad403-db4b-405a-bbd1-1bc5da9137b5 --rackspace-flavor-id "general1-2" cd-iad-peerbelt-$CIRCLE_BUILD_NUM
