@@ -1,8 +1,0 @@
-files:
-  - /var/log/nginx/*.log
-  - /var/log/consumer/*.log
-  - /var/log/console-api/*.log
-  - /var/log/digest/*.log
-destination:
-  host: logs2.papertrailapp.com
-  port: 30739
