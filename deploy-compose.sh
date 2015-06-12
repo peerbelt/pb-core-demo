@@ -1,6 +1,6 @@
 #!/bin/bash -x
 
-ID_RSA=/home/ubuntu/.docker/machines/cd-iad-peerbelt-$CIRCLE_BUILD_NUM/id_rsa
+ID_RSA=/home/ubuntu/.docker/machines/prod-iad-peerbelt-$CIRCLE_BUILD_NUM/id_rsa
 USER_DIR=/home/peerbelt
 
 # Install Rackspace monitoring agent
@@ -54,8 +54,8 @@ ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker-compose --file /home/peer
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo service nginx restart'
 
 # Start Papertrail
-ssh -i ../.docker/machines/cd-iad-peerbelt-$CIRCLE_BUILD_NUM/id_rsa root@`./docker-machine ip`  'sudo chmod 755 /etc/init.d/remote_syslog'
-ssh -i ../.docker/machines/cd-iad-peerbelt-$CIRCLE_BUILD_NUM/id_rsa root@`./docker-machine ip` 'sudo service remote_syslog start'
+ssh -i ../.docker/machines/prod-iad-peerbelt-$CIRCLE_BUILD_NUM/id_rsa root@`./docker-machine ip`  'sudo chmod 755 /etc/init.d/remote_syslog'
+ssh -i ../.docker/machines/prod-iad-peerbelt-$CIRCLE_BUILD_NUM/id_rsa root@`./docker-machine ip` 'sudo service remote_syslog start'
 
 # Start NewRelic
 scp -i $ID_RSA nrsysmond.cfg root@`./docker-machine ip`:/home/peerbelt
