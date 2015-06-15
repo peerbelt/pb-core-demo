@@ -15,8 +15,8 @@ consoleapi:
     - /var/data/console-api:/home/pb-core-console-api/data
   environment:
     - NODE_ENV=cd
-    - NEW_RELIC_APP_NAME=cd-iad-consoleapi
-    - NEW_RELIC_LICENSE_KEY=6b69530bc9d305b58a250460b0defbdb82423859    
+    - NEW_RELIC_APP_NAME=plus-iad-consoleapi
+    - NEW_RELIC_LICENSE_KEY=e05c8ac325c1bab960e211f52223216abab870d7   
   restart: always
   
 saas:
@@ -32,8 +32,8 @@ trackingapi:
   volumes:
     - /var/log/tracking-api:/var/log/tracking-api/
   environment:
-    - NEW_RELIC_APP_NAME=cd-iad-trackingapi
-    - NEW_RELIC_LICENSE_KEY=6b69530bc9d305b58a250460b0defbdb82423859
-    - CASSANDRA_HOST='"10.223.242.77","10.223.242.167","10.223.240.127"'
+    - NEW_RELIC_APP_NAME=plus-iad-trackingapi
+    - NEW_RELIC_LICENSE_KEY=e05c8ac325c1bab960e211f52223216abab870d7
+    - CASSANDRA_HOST='"10.209.3.172","10.209.3.100","10.209.97.182"'
   restart: always
 
