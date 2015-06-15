@@ -1,16 +1,6 @@
-server {
-        listen 80;
-        server_name plus-saas.peerbelt.com;
-        return 301 https://saas.peerbelt.com$request_uri;
-}
-server {
-        listen 80;
-        server_name plus-console.peerbelt.com;
-        return 301 https://console.peerbelt.com$request_uri;
-}
-server {
-    listen 443;
-    server_name plus-saas.peerbelt.com;
+server {    
+    listen 80;
+    server_name plus-saas.peerbelt.com plus-www.peerbelt.com;
     access_log /var/log/nginx/www-pb-access.log;
     error_log /var/log/nginx/www-pb-error.log;
     location / {
@@ -22,7 +12,7 @@ server {
     }
 }
 server {
-    listen 443;
+    listen 80;
     server_name plus-console.peerbelt.com;
     access_log /var/log/nginx/console-pb-access.log;
     error_log /var/log/nginx/console-pb-error.log;
@@ -42,7 +32,7 @@ server {
     }
 }
 server {
-    listen 443;
+    listen 80;
     server_name plus-track.peerbelt.com;
     access_log /var/log/nginx/tracking-pb-access.log;
     error_log /var/log/nginx/tracking-pb-error.log;
@@ -55,7 +45,7 @@ server {
     }
 }
 server {
-    listen 443;
+    listen 80;
     server_name plus-sense.peerbelt.com;
     access_log /var/log/nginx/consumer-pb-access.log;
     error_log /var/log/nginx/consumer-pb-error.log;
@@ -67,4 +57,3 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
-
