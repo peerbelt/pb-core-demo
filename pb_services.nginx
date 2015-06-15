@@ -1,24 +1,16 @@
 server {
         listen 80;
-        server_name beta-saas.peerbelt.com;
-        return 301 https://beta-saas.peerbelt.com$request_uri;
+        server_name plus-saas.peerbelt.com;
+        return 301 https://saas.peerbelt.com$request_uri;
 }
-
 server {
         listen 80;
-        server_name beta-console.peerbelt.com;
-        return 301 https://beta-console.peerbelt.com$request_uri;
+        server_name plus-console.peerbelt.com;
+        return 301 https://console.peerbelt.com$request_uri;
 }
-
-server {
-        listen 80;
-        server_name beta-tracking.peerbelt.com;
-        return 301 https://beta-tracking.peerbelt.com$request_uri;
-}
-
 server {
     listen 443;
-    server_name beta-saas.peerbelt.com;
+    server_name plus-saas.peerbelt.com;
     access_log /var/log/nginx/www-pb-access.log;
     error_log /var/log/nginx/www-pb-error.log;
     location / {
@@ -29,10 +21,9 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
-
 server {
     listen 443;
-    server_name beta-console.peerbelt.com;
+    server_name plus-console.peerbelt.com;
     access_log /var/log/nginx/console-pb-access.log;
     error_log /var/log/nginx/console-pb-error.log;
     location / {
@@ -50,10 +41,9 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
-
 server {
     listen 443;
-    server_name beta-tracking.peerbelt.com;
+    server_name plus-track.peerbelt.com;
     access_log /var/log/nginx/tracking-pb-access.log;
     error_log /var/log/nginx/tracking-pb-error.log;
     location / {
@@ -64,3 +54,17 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
+server {
+    listen 443;
+    server_name plus-sense.peerbelt.com;
+    access_log /var/log/nginx/consumer-pb-access.log;
+    error_log /var/log/nginx/consumer-pb-error.log;
+    location / {
+        proxy_pass http://localhost:11111;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
