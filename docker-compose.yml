@@ -34,6 +34,6 @@ trackingapi:
   environment:
     - NEW_RELIC_APP_NAME=plus-iad-trackingapi
     - NEW_RELIC_LICENSE_KEY=e05c8ac325c1bab960e211f52223216abab870d7
-    - CASSANDRA_HOST='"10.209.3.172","10.209.3.100","10.209.97.182"'
+    - CASSANDRA_HOST="\"10.209.3.172\",\"10.209.3.100\",\"10.209.97.182\""
   restart: always
 
