@@ -8,7 +8,7 @@ ssh -i $ID_RSA root@`./docker-machine ip` 'wget http://meta.packages.cloudmonito
 ssh -i $ID_RSA root@`./docker-machine ip` 'dpkg -i rackspace-cloud-monitoring-meta-stable_1.0_all.deb'
 ssh -i $ID_RSA root@`./docker-machine ip` 'apt-get update'
 ssh -i $ID_RSA root@`./docker-machine ip` 'apt-get install -y rackspace-monitoring-agent'
-
+ssh -i $ID_RSA root@`./docker-machine ip` 'service rackspace-monitoring-agent start'
 # Create Team memebers accounts and get keys frm S3
 scp -i $ID_RSA user-config.sh root@`./docker-machine ip`:/tmp
 ssh -i $ID_RSA root@`./docker-machine ip` 'mkdir -p /root/.aws'
