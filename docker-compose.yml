@@ -14,7 +14,7 @@ consoleapi:
     - /var/log/console-api:/var/log/console-api/
     - /var/data/console-api:/home/pb-core-console-api/data
   environment:
-    - NODE_ENV=cd
+    - NODE_ENV=prod
     - NEW_RELIC_APP_NAME=plus-iad-consoleapi
     - NEW_RELIC_LICENSE_KEY=e05c8ac325c1bab960e211f52223216abab870d7   
   restart: always
