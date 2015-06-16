@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name cd-iad-www.peerbelt.link saas.peerbelt.link;
+    server_name cd-iad-www.peerbelt.link cd-saas.peerbelt.link;
     access_log /var/log/nginx/www-pb-access.log;
     error_log /var/log/nginx/www-pb-error.log;
     location / {
@@ -14,7 +14,7 @@ server {
 
 server {
     listen 80;
-    server_name cd-iad-console.peerbelt.link console.peerbelt.link;
+    server_name cd-iad-console.peerbelt.link cd-console.peerbelt.link;
     access_log /var/log/nginx/console-pb-access.log;
     error_log /var/log/nginx/console-pb-error.log;
     location / {
@@ -35,7 +35,7 @@ server {
 
 server {
     listen 80;
-    server_name cd-iad-tracking.peerbelt.link tracking.peerbelt.link;
+    server_name cd-iad-tracking.peerbelt.link cd-tracking.peerbelt.link;
     access_log /var/log/nginx/tracking-pb-access.log;
     error_log /var/log/nginx/tracking-pb-error.log;
     location / {
@@ -46,10 +46,9 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
-
 server {
     listen 80;
-    server_name cd-iad-consumer.peerbelt.link consumer.peerbelt.link;
+    server_name cd-iad-consumer.peerbelt.link cd-consumer.peerbelt.link;
     access_log /var/log/nginx/consumer-pb-access.log;
     error_log /var/log/nginx/consumer-pb-error.log;
     location / {
