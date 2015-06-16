@@ -7,7 +7,7 @@ USER_DIR=/home/peerbelt
 ssh -i $ID_RSA root@`./docker-machine ip` 'wget http://meta.packages.cloudmonitoring.rackspace.com/ubuntu-14.04-x86_64/rackspace-cloud-monitoring-meta-stable_1.0_all.deb'
 ssh -i $ID_RSA root@`./docker-machine ip` 'dpkg -i rackspace-cloud-monitoring-meta-stable_1.0_all.deb'
 ssh -i $ID_RSA root@`./docker-machine ip` 'apt-get update'
-ssh -i $ID_RSA root@`./docker-machine ip` 'apt-get install rackspace-monitoring-agent'
+ssh -i $ID_RSA root@`./docker-machine ip` 'apt-get install -y rackspace-monitoring-agent'
 
 # Create Team memebers accounts and get keys frm S3
 scp -i $ID_RSA user-config.sh root@`./docker-machine ip`:/tmp
