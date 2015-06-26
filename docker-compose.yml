@@ -44,6 +44,7 @@ trackingapi:
   volumes:
     - /var/log/tracking-api:/var/log/tracking-api/
   environment:
+    - NODE_ENV=cd
     - NEW_RELIC_APP_NAME=cd-iad-trackingapi
     - NEW_RELIC_LICENSE_KEY=6b69530bc9d305b58a250460b0defbdb82423859
   restart: always
@@ -53,10 +54,12 @@ consumerapi:
   ports:
     - "11111:3000"
   links:
+    - cassandra:cassandra
     - elasticsearch:elasticsearch
   volumes:
     - /var/log/consumer:/var/log/consumer/
   environment:
+    - NODE_ENV=cd
     - NEW_RELIC_APP_NAME=cd-iad-consumerapi
     - NEW_RELIC_LICENSE_KEY=6b69530bc9d305b58a250460b0defbdb82423859
   restart: always
@@ -69,6 +72,7 @@ consumerapi:
   volumes:
     - /var/log/digest:/var/log/digest/
   environment:
+    - NODE_ENV=cd
     - NEW_RELIC_APP_NAME=cd-iad-digest
     - NEW_RELIC_LICENSE_KEY=6b69530bc9d305b58a250460b0defbdb82423859
   restart: always
