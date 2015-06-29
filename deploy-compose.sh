@@ -33,7 +33,7 @@ scp -i $ID_RSA pb-core-saas-website-latest.tar root@`./docker-machine ip`:/home/
 scp -i $ID_RSA pb-core-console-latest.tar root@`./docker-machine ip`:/home/peerbelt
 scp -i $ID_RSA pb-core-console-api-latest.tar root@`./docker-machine ip`:/home/peerbelt
 scp -i $ID_RSA pb-core-tracking-api-latest.tar root@`./docker-machine ip`:/home/peerbelt
-#scp -i $ID_RSA pb-core-consumer-api-latest.tar root@`./docker-machine ip`:/home/peerbelt
+scp -i $ID_RSA pb-core-consumer-api-latest.tar root@`./docker-machine ip`:/home/peerbelt
 #scp -i $ID_RSA pb-core-digest-latest.tar root@`./docker-machine ip`:/home/peerbelt
 scp -i $ID_RSA pb_services.nginx root@`./docker-machine ip`:/home/peerbelt/pb_services.nginx
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo mv /home/peerbelt/pb_services.nginx /etc/nginx/sites-available/pb_services.nginx'
@@ -45,7 +45,7 @@ ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /home/peerbelt/pb
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /home/peerbelt/pb-core-console-latest.tar'
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /home/peerbelt/pb-core-console-api-latest.tar'
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /home/peerbelt/pb-core-tracking-api-latest.tar'
-#ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /home/peerbelt/pb-core-consumer-api-latest.tar'
+ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /home/peerbelt/pb-core-consumer-api-latest.tar'
 #ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /home/peerbelt/pb-core-digest-latest.tar'
 ssh -i $ID_RSA root@`./docker-machine ip` 'curl -L https://github.com/docker/compose/releases/download/1.2.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose'
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo chmod +x /usr/local/bin/docker-compose'
