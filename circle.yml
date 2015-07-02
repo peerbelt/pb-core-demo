@@ -28,7 +28,7 @@ dependencies:
     - aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-console-api-latest.tar . 
     - aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-tracking-api-latest.tar .
     - aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-consumer-api-latest.tar .
-#    - aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-digest-latest.tar .
+    - aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-digest-latest.tar .
 #    - aws s3 cp s3://devops-peerbelt/machines/CD/elasticsearch-single-sample.tar .
 #    - aws s3 cp s3://devops-peerbelt/machines/CD/cassandra-single-sample.tar .
     - docker load -i pb-core-saas-website-latest.tar
@@ -43,13 +43,13 @@ test:
 
 deployment:
     staging:
-      branch: [cd,prod]
+      branch: [cd,test]
       commands:
         # Creates the EC2 instance
-        - ./docker-machine create --driver rackspace --rackspace-image-id e46ad403-db4b-405a-bbd1-1bc5da9137b5 --rackspace-flavor-id "general1-8" prod-iad-peerbelt-$CIRCLE_BUILD_NUM
-        - cp $HOME/.docker/machines/prod-iad-peerbelt-$CIRCLE_BUILD_NUM/id_rsa id_rsa-$CIRCLE_BUILD_NUM
+        - ./docker-machine create --driver rackspace --rackspace-image-id e46ad403-db4b-405a-bbd1-1bc5da9137b5 --rackspace-flavor-id "general1-4" test-iad-peerbelt-$CIRCLE_BUILD_NUM
+        - cp $HOME/.docker/machines/test-iad-peerbelt-$CIRCLE_BUILD_NUM/id_rsa id_rsa-$CIRCLE_BUILD_NUM
         # Pushes the machine private key to S3
-        - aws s3 cp ../.docker/machines/prod-iad-peerbelt-$CIRCLE_BUILD_NUM/id_rsa s3://devops-peerbelt/ec2-keys/CD/id_rsa_$CIRCLE_BUILD_NUM 
-        - aws s3 cp ../.docker/machines/prod-iad-peerbelt-$CIRCLE_BUILD_NUM/id_rsa s3://devops-peerbelt/ec2-keys/CD/id_rsa_latest
+        - aws s3 cp ../.docker/machines/test-iad-peerbelt-$CIRCLE_BUILD_NUM/id_rsa s3://devops-peerbelt/ec2-keys/CD/id_rsa_$CIRCLE_BUILD_NUM 
+        - aws s3 cp ../.docker/machines/test-iad-peerbelt-$CIRCLE_BUILD_NUM/id_rsa s3://devops-peerbelt/ec2-keys/CD/id_rsa_latest
         #Deploy service containers 
         - /bin/bash -x ./deploy-compose.sh
