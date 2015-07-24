@@ -14,9 +14,10 @@ consoleapi:
     - /var/log/console-api:/var/log/console-api/
     - /var/data/console-api:/home/pb-core-console-api/data
   environment:
-    - NODE_ENV=prod
-    - NEW_RELIC_APP_NAME=plus-iad-consoleapi
-    - NEW_RELIC_LICENSE_KEY=e05c8ac325c1bab960e211f52223216abab870d7   
+    - NODE_ENV=test
+    - TRACKINGAPI_ACCESS_TOKEN=15f6d6e8e9155a17153dd2c4e101a982
+    - NEW_RELIC_APP_NAME=test-iad-consoleapi
+    - NEW_RELIC_LICENSE_KEY=6b69530bc9d305b58a250460b0defbdb82423859   
   restart: always
   
 saas:
@@ -33,20 +34,34 @@ trackingapi:
     - /var/log/tracking-api:/var/log/tracking-api/
     - /home/peerbelt/pb-core-tracking-api:/home/pb-core-tracking-api
   environment:
-    - NEW_RELIC_APP_NAME=plus-iad-trackingapi
-    - NEW_RELIC_LICENSE_KEY=e05c8ac325c1bab960e211f52223216abab870d7
-    - CASSANDRA_HOST=10.209.3.172,10.209.3.100,10.209.97.182
+    - NODE_ENV=test
+    - NEW_RELIC_APP_NAME=test-iad-trackingapi
+    - NEW_RELIC_LICENSE_KEY=6b69530bc9d305b58a250460b0defbdb82423859
+    - CASSANDRA_HOST=10.176.12.189
   restart: always
+  command: /usr/local/bin/forever --pidFile /tmp/tracking.pid -a -l /var/log/tracking-api/tracking-api-forever.log -o /var/log/tracking-api/tracking-api-app.log -e /var/log/tracking-api/tracking-api-err.log /home/pb-core-tracking-api/api/cluster.js
 
 consumerapi:
   image: peerbelt/pb-core-consumer-api
   ports:
     - "11111:3000"
   volumes:
-    - /var/log/consumer-api:/var/log/consumer-api/
+    - /var/log/consumer:/var/log/consumer/
   environment:
-    - NEW_RELIC_APP_NAME=plus-iad-consumerapi
-    - NEW_RELIC_LICENSE_KEY=e05c8ac325c1bab960e211f52223216abab870d7
-    - CASSANDRA_HOST=10.209.3.172,10.209.3.100,10.209.97.182
+    - NODE_ENV=test
+    - NEW_RELIC_APP_NAME=test-iad-consumerapi
+    - NEW_RELIC_LICENSE_KEY=6b69530bc9d305b58a250460b0defbdb82423859
+    - CASSANDRA_HOST=10.176.12.189
     - ELASTICSEARCH_HOST=10.176.204.115
   restart: always
+#digest:
+#  image: peerbelt/pb-core-digest
+#  volumes:
+#    - /var/log/digest:/var/log/digest/
+#  environment:
+#    - NODE_ENV=test
+#    - NEW_RELIC_APP_NAME=test-iad-digest
+#    - NEW_RELIC_LICENSE_KEY=e05c8ac325c1bab960e211f52223216abab870d7
+#    - CASSANDRA_HOST=10.176.12.189
+#    - ELASTICSEARCH_HOST=10.176.204.115
+#  restart: always
