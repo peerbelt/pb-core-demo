@@ -19,13 +19,6 @@ ssh -i $ID_RSA root@`./docker-machine ip` 'sudo /tmp/user-config.sh s3://devops-
 scp -i $ID_RSA rackspace_user root@`./docker-machine ip`:/etc/sudoers.d/rackspace_user
 ssh -i $ID_RSA root@`./docker-machine ip` 'chmod 400 /etc/sudoers.d/rackspace_user'
 
-
-# Install Cassandra and Elastic Search images
-#scp -i $ID_RSA cassandra-single-sample.tar root@`./docker-machine ip`:/home/peerbelt
-#ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /home/peerbelt/cassandra-single-sample.tar'
-#scp -i $ID_RSA elasticsearch-single-sample.tar root@`./docker-machine ip`:/home/peerbelt
-#ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /home/peerbelt/elasticsearch-single-sample.tar'
-
 # Copies the services and Nginx config to the new EC2
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo mkdir -p /var/log/console-api/ /var/log/consumer/ /var/log/tracking-api /var/log/digest /var/data/console-api'
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo apt-get install -y nginx; sudo rm -rf /etc/nginx/sites-enabled/default'
