@@ -54,14 +54,3 @@ consumerapi:
     - CASSANDRA_HOST=10.176.12.189
     - ELASTICSEARCH_HOST=10.176.204.115
   restart: always
-#digest:
-#  image: peerbelt/pb-core-digest
-#  volumes:
-#    - /var/log/digest:/var/log/digest/
-#  environment:
-#    - NODE_ENV=test
-#    - NEW_RELIC_APP_NAME=test-iad-digest
-#    - NEW_RELIC_LICENSE_KEY=e05c8ac325c1bab960e211f52223216abab870d7
-#    - CASSANDRA_HOST=10.176.12.189
-#    - ELASTICSEARCH_HOST=10.176.204.115
-#  restart: always
