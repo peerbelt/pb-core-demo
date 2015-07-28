@@ -46,7 +46,7 @@ deployment:
       branch: [cd,test]
       commands:
         # Creates the EC2 instance
-        - ./docker-machine create --driver rackspace --rackspace-image-id e46ad403-db4b-405a-bbd1-1bc5da9137b5 --rackspace-flavor-id "general1-4" test-iad-peerbelt-$CIRCLE_BUILD_NUM
+        - ./docker-machine create --driver rackspace --rackspace-image-id e46ad403-db4b-405a-bbd1-1bc5da9137b5 --rackspace-flavor-id "general1-2" test-iad-peerbelt-$CIRCLE_BUILD_NUM
         - cp $HOME/.docker/machines/test-iad-peerbelt-$CIRCLE_BUILD_NUM/id_rsa id_rsa-$CIRCLE_BUILD_NUM
         # Pushes the machine private key to S3
         - aws s3 cp ../.docker/machines/test-iad-peerbelt-$CIRCLE_BUILD_NUM/id_rsa s3://devops-peerbelt/ec2-keys/CD/id_rsa_$CIRCLE_BUILD_NUM 
