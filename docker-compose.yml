@@ -32,15 +32,13 @@ trackingapi:
     - "22222:3001"
   volumes:
     - /var/log/tracking-api:/var/log/tracking-api/
-    - /home/peerbelt/pb-core-tracking-api:/home/pb-core-tracking-api
   environment:
     - NODE_ENV=test
     - NEW_RELIC_APP_NAME=test-iad-trackingapi
     - NEW_RELIC_LICENSE_KEY=6b69530bc9d305b58a250460b0defbdb82423859
     - CASSANDRA_HOST=10.176.12.189
   restart: always
-  command: /usr/local/bin/forever --pidFile /tmp/tracking.pid -a -l /var/log/tracking-api/tracking-api-forever.log -o /var/log/tracking-api/tracking-api-app.log -e /var/log/tracking-api/tracking-api-err.log /home/pb-core-tracking-api/api/cluster.js
-
+  command: /usr/local/bin/forever --pidFile /tmp/tracking.pid -a -l /var/log/tracking-api/tracking-api-forever.log -o /var/log/tracking-api/tracking-api-app.log -e /var/log/tracking-api/tracking-api-err.log /home/pb-core-tracking-api/app.js
 consumerapi:
   image: peerbelt/pb-core-consumer-api
   ports:
