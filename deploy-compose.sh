@@ -73,3 +73,5 @@ ssh -i $ID_RSA root@`./docker-machine ip` 'sudo sed -i s/PasswordAuthentication\
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo sed -i s/UsePAM\ yes/UsePAM\ no/g /etc/ssh/sshd_config'
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo service ssh restart'
 
+# Flush Fastly cache:
+curl https://api.fastly.com/service/6QXxjH3htqTBp0h5OaP9PS/purge_all -X POST -H "Fastly-Key: $FASTLY_KEY" -H "Accept: application/json"
