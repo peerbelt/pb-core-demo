@@ -11,7 +11,7 @@ machine:
 dependencies:
   pre:
     - pip install awscli
-    - wget https://github.com/docker/machine/releases/download/v0.1.0-rc5/docker-machine_linux-amd64
+    - wget https://github.com/docker/machine/releases/download/v0.4.1/docker-machine_linux-amd64
     - mv docker-machine_linux-amd64 docker-machine
     - chmod 755 docker-machine
     - sed -i "s/AWS_KEY/$AWS_ACCESS_KEY_ID/g" config
