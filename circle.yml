@@ -43,13 +43,13 @@ test:
 
 deployment:
     staging:
-      branch: cd
+      branch: do-cd
       commands:
         # Creates the EC2 instance
-        - ./docker-machine create --driver rackspace --rackspace-image-id e46ad403-db4b-405a-bbd1-1bc5da9137b5 --rackspace-flavor-id "general1-2" cd-iad-peerbelt-$CIRCLE_BUILD_NUM
-        - cp $HOME/.docker/machines/cd-iad-peerbelt-$CIRCLE_BUILD_NUM/id_rsa id_rsa-$CIRCLE_BUILD_NUM
+        - ./docker-machine create --driver --digitalocean --digitalocean-access-token $DO_ACCESS_TOKEN --digitalocean-image "ubuntu-14-04-x64" --digitalocean-private-networking  --digitalocean-region "nyc2" --digitalocean-size "1gb" cd-nyc2-peerbelt-$CIRCLE_BUILD_NUM
+        - cp $HOME/.docker/machines/cd-nyc2-peerbelt-$CIRCLE_BUILD_NUM/id_rsa id_rsa-$CIRCLE_BUILD_NUM
         # Pushes the machine private key to S3
-        - aws s3 cp ../.docker/machines/cd-iad-peerbelt-$CIRCLE_BUILD_NUM/id_rsa s3://devops-peerbelt/ec2-keys/CD/id_rsa_$CIRCLE_BUILD_NUM 
-        - aws s3 cp ../.docker/machines/cd-iad-peerbelt-$CIRCLE_BUILD_NUM/id_rsa s3://devops-peerbelt/ec2-keys/CD/id_rsa_latest
+        - aws s3 cp ../.docker/machines/cd-nyc2-peerbelt-$CIRCLE_BUILD_NUM/id_rsa s3://devops-peerbelt/ec2-keys/CD/id_rsa_$CIRCLE_BUILD_NUM 
+        - aws s3 cp ../.docker/machines/cd-nyc2-peerbelt-$CIRCLE_BUILD_NUM/id_rsa s3://devops-peerbelt/ec2-keys/CD/id_rsa_latest
         #Deploy service containers 
         - /bin/bash -x ./deploy-compose.sh

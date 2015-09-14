@@ -21,6 +21,8 @@ scp -i $ID_RSA elasticsearch-single-sample.tar root@`./docker-machine ip`:/home/
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo docker load -i /home/peerbelt/elasticsearch-single-sample.tar'
 
 # Copies the services and Nginx config to the new EC2
+ssh -i $ID_RSA root@`./docker-machine ip` 'sudo apt-get update'
+ssh -i $ID_RSA root@`./docker-machine ip` 'sudo apt-get install -y nginx'
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo mkdir -p /var/log/console-api/ /var/log/consumer/ /var/log/tracking-api /var/log/digest /var/data/console-api'
 ssh -i $ID_RSA root@`./docker-machine ip` 'sudo apt-get install -y nginx; sudo rm -rf /etc/nginx/sites-enabled/default'
 scp -i $ID_RSA pb-core-saas-website-latest.tar root@`./docker-machine ip`:/home/peerbelt
