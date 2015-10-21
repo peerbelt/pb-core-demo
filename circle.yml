@@ -16,11 +16,7 @@ dependencies:
     - chmod 755 docker-machine
     - sed -i "s/AWS_KEY/$AWS_ACCESS_KEY_ID/g" config
     - sed -i "s|AWS_SECRET|$AWS_SECRET_ACCESS_KEY|g" config
-    - sed -i "s/USER/$OS_USERNAME/g" keys.rb
-    - sed -i "s/API_KEY/$OS_API_KEY/g" keys.rb
     - sed "s/license_key\=*/license_key\=$NEWRELIC_NON_PROD/g" nrsysmond.cfg
-    - ruby -v
-    - gem install fog
   override:
     - docker info
     - aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-saas-website-latest.tar . 
