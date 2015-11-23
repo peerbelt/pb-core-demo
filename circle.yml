@@ -1,26 +1,30 @@
 machine:
-  node:
-    version: 0.10.32
+#  node:
+#    version: 0.10.32
   python:
     version: 2.7.3
-  ruby:
-    version: 2.1.5
+#  ruby:
+#    version: 2.1.5
   services:
     - docker
 
 dependencies:
   pre:
     - pip install awscli
-    - wget https://github.com/docker/machine/releases/download/v0.1.0-rc5/docker-machine_linux-amd64
-    - mv docker-machine_linux-amd64 docker-machine
-    - chmod 755 docker-machine
-    - sed -i "s/AWS_KEY/$AWS_ACCESS_KEY_ID/g" config
-    - sed -i "s|AWS_SECRET|$AWS_SECRET_ACCESS_KEY|g" config
-    - sed -i "s/USER/$OS_USERNAME/g" keys.rb
-    - sed -i "s/API_KEY/$OS_API_KEY/g" keys.rb
+#    - wget https://github.com/docker/machine/releases/download/v0.1.0-rc5/docker-machine_linux-amd64
+#    - mv docker-machine_linux-amd64 docker-machine
+#    - chmod 755 docker-machine
+#    - sed -i "s/AWS_KEY/$AWS_ACCESS_KEY_ID/g" config
+#    - sed -i "s|AWS_SECRET|$AWS_SECRET_ACCESS_KEY|g" config
+#    - sed -i "s/USER/$OS_USERNAME/g" keys.rb
+#    - sed -i "s/API_KEY/$OS_API_KEY/g" keys.rb
     - sed "s/license_key\=*/license_key\=$NEWRELIC_NON_PROD/g" nrsysmond.cfg
-    - ruby -v
-    - gem install fog
+#    - ruby -v
+#    - gem install fog
+     - git clone git@github.com:softlayer/softlayer-python.git
+     - cd softlayer-python; python setup.py install
+     - aws s3 cp s3://devops-peerbelt/sl_keys/id_rsa
+     - chmod 400 id_rsa
   override:
     - docker info
     - aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-saas-website-latest.tar . 
@@ -28,28 +32,16 @@ dependencies:
     - aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-console-api-latest.tar . 
     - aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-tracking-api-latest.tar .
     - aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-consumer-api-latest.tar .
-#    - aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-digest-latest.tar .
-#    - aws s3 cp s3://devops-peerbelt/machines/CD/elasticsearch-single-sample.tar .
-#    - aws s3 cp s3://devops-peerbelt/machines/CD/cassandra-single-sample.tar .
-    - docker load -i pb-core-saas-website-latest.tar
-    - docker load -i pb-core-console-latest.tar
+    - aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-digest-latest.tar .
 
 test:
   override:
-    - docker run -d -p 44444:80 peerbelt/pb-core-saas-website
-    - docker run -d -p 44445:80 peerbelt/pb-core-console
-    - curl --retry 10 --retry-delay 5 -v http://localhost:44444
-    - curl --retry 10 --retry-delay 5 -v http://localhost:44445
-
+    - echo "No tests so far"
 deployment:
-    staging:
-      branch: [cd,prod]
+    production:
+      branch: [prod]
       commands:
         # Creates the EC2 instance
-        - ./docker-machine create --driver rackspace --rackspace-image-id e46ad403-db4b-405a-bbd1-1bc5da9137b5 --rackspace-flavor-id "general1-8" prod-iad-peerbelt-$CIRCLE_BUILD_NUM
-        - cp $HOME/.docker/machines/prod-iad-peerbelt-$CIRCLE_BUILD_NUM/id_rsa id_rsa-$CIRCLE_BUILD_NUM
-        # Pushes the machine private key to S3
-        - aws s3 cp ../.docker/machines/prod-iad-peerbelt-$CIRCLE_BUILD_NUM/id_rsa s3://devops-peerbelt/ec2-keys/CD/id_rsa_$CIRCLE_BUILD_NUM 
-        - aws s3 cp ../.docker/machines/prod-iad-peerbelt-$CIRCLE_BUILD_NUM/id_rsa s3://devops-peerbelt/ec2-keys/CD/id_rsa_latest
-        #Deploy service containers 
+        - slcli -y vs create -H "sl-$CIRCLE_BUILD_NUM-web-wdc04" -D "peerbelt.com" -c 8 -m 8192 -d "wdc04" -k "root-user-web-key" -n "1000" --image $IMAGE_GUID
+        #Deploy services and containers 
         - /bin/bash -x ./deploy-compose.sh
