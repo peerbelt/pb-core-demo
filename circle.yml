@@ -12,6 +12,7 @@ dependencies:
   pre:
     - pip install awscli
     - pip install softlayer
+    - cp /home/ubuntu/pb-core-demo/.softlayer .
     - sed -i "s|SL_USER_REPLACE|$SL_USER|g" .softlayer
     - sed -i "s|SL_API_KEY_REPLACE|$SL_API_KEY|g" .softlayer
     - sed "s/license_key\=*/license_key\=$NEWRELIC_NON_PROD/g" nrsysmond.cfg
@@ -33,7 +34,7 @@ deployment:
     production:
       branch: [prod]
       commands:
-        # Creates the EC2 instance
+        # Creates the SL instance
         - slcli -y vs create -H "sl-$CIRCLE_BUILD_NUM-web-wdc04" -D "peerbelt.com" -c 8 -m 8192 -d "wdc04" -k "root-user-web-key" -n "1000" --image $IMAGE_GUID
         #Deploy services and containers 
         - /bin/bash -x ./deploy-compose.sh
