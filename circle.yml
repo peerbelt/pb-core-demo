@@ -23,7 +23,7 @@ dependencies:
 #    - ruby -v
 #    - gem install fog
 #     - git clone https://github.com/softlayer/softlayer-python
-     - cd softlayer-python; python setup.py install
+#     - cd softlayer-python; python setup.py install
      - aws s3 cp s3://devops-peerbelt/sl_keys/id_rsa
      - chmod 400 id_rsa
   override:
