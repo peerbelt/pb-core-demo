@@ -12,20 +12,9 @@ dependencies:
   pre:
     - pip install awscli
     - pip install softlayer
-#    - wget https://github.com/docker/machine/releases/download/v0.1.0-rc5/docker-machine_linux-amd64
-#    - mv docker-machine_linux-amd64 docker-machine
-#    - chmod 755 docker-machine
-#    - sed -i "s/AWS_KEY/$AWS_ACCESS_KEY_ID/g" config
-#    - sed -i "s|AWS_SECRET|$AWS_SECRET_ACCESS_KEY|g" config
-#    - sed -i "s/USER/$OS_USERNAME/g" keys.rb
-#    - sed -i "s/API_KEY/$OS_API_KEY/g" keys.rb
     - sed "s/license_key\=*/license_key\=$NEWRELIC_NON_PROD/g" nrsysmond.cfg
-#    - ruby -v
-#    - gem install fog
-#     - git clone https://github.com/softlayer/softlayer-python
-#     - cd softlayer-python; python setup.py install
-     - aws s3 cp s3://devops-peerbelt/sl_keys/id_rsa
-     - chmod 400 id_rsa
+    - aws s3 cp s3://devops-peerbelt/sl_keys/id_rsa
+    - chmod 400 id_rsa
   override:
     - docker info
     - aws s3 cp s3://devops-peerbelt/machines/CD/images/latest/pb-core-saas-website-latest.tar . 
