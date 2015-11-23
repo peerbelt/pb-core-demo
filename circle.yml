@@ -12,6 +12,8 @@ dependencies:
   pre:
     - pip install awscli
     - pip install softlayer
+    - sed -i "s|SL_USER_REPLACE|$SL_USER|g" .softlayer
+    - sed -i "s|SL_API_KEY_REPLACE|$SL_API_KEY|g" .softlayer
     - sed "s/license_key\=*/license_key\=$NEWRELIC_NON_PROD/g" nrsysmond.cfg
     - aws s3 cp s3://devops-peerbelt/sl_keys/id_rsa .
     - chmod 400 id_rsa
