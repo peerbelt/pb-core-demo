@@ -13,7 +13,7 @@ dependencies:
     - pip install awscli
     - pip install softlayer
     - sed "s/license_key\=*/license_key\=$NEWRELIC_NON_PROD/g" nrsysmond.cfg
-    - aws s3 cp s3://devops-peerbelt/sl_keys/id_rsa
+    - aws s3 cp s3://devops-peerbelt/sl_keys/id_rsa .
     - chmod 400 id_rsa
   override:
     - docker info
