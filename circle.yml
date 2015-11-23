@@ -11,6 +11,7 @@ machine:
 dependencies:
   pre:
     - pip install awscli
+    - pip install softlayer
 #    - wget https://github.com/docker/machine/releases/download/v0.1.0-rc5/docker-machine_linux-amd64
 #    - mv docker-machine_linux-amd64 docker-machine
 #    - chmod 755 docker-machine
@@ -21,7 +22,7 @@ dependencies:
     - sed "s/license_key\=*/license_key\=$NEWRELIC_NON_PROD/g" nrsysmond.cfg
 #    - ruby -v
 #    - gem install fog
-     - git clone https://github.com/softlayer/softlayer-python
+#     - git clone https://github.com/softlayer/softlayer-python
      - cd softlayer-python; python setup.py install
      - aws s3 cp s3://devops-peerbelt/sl_keys/id_rsa
      - chmod 400 id_rsa
