@@ -12,7 +12,7 @@ dependencies:
   pre:
     - pip install awscli
     - pip install softlayer
-    - cp /home/ubuntu/pb-core-demo/.softlayer .
+    - cp /home/ubuntu/pb-core-demo/.softlayer /home/ubuntu/.softlayer
     - sed -i "s|SL_USER_REPLACE|$SL_USER|g" .softlayer
     - sed -i "s|SL_API_KEY_REPLACE|$SL_API_KEY|g" .softlayer
     - sed "s/license_key\=*/license_key\=$NEWRELIC_NON_PROD/g" nrsysmond.cfg
