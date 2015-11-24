@@ -35,7 +35,7 @@ scp -i $ID_RSA pb-core-tracking-api-latest.tar root@$SERVER_IP:/home/peerbelt
 scp -i $ID_RSA pb-core-consumer-api-latest.tar root@$SERVER_IP:/home/peerbelt
 scp -i $ID_RSA pb-core-digest-latest.tar root@$SERVER_IP:/home/peerbelt
 scp -i $ID_RSA pb_services.nginx root@$SERVER_IP:/home/peerbelt/pb_services.nginx
-ssh -i $ID_RSA root@$SERVER_IP 'sudo mv /home/peerbelt/pb_services.nginx /etc/nginx/sites-available/pb_services.nqginx'
+ssh -i $ID_RSA root@$SERVER_IP 'sudo mv /home/peerbelt/pb_services.nginx /etc/nginx/sites-available/pb_services.nginx'
 ssh -i $ID_RSA root@$SERVER_IP 'sudo  ln -s  /etc/nginx/sites-available/pb_services.nginx /etc/nginx/sites-enabled/pb_services.nginx'
 
 # Starts the services
@@ -62,12 +62,12 @@ ssh -i $ID_RSA root@$SERVER_IP 'mv /home/peerbelt/nrsysmond.cfg /etc/newrelic/nr
 ssh -i $ID_RSA root@$SERVER_IP 'service newrelic-sysmond start'
 
 #Configure iptables
-ssh -i $ID_RSA root@$SERVER_IP 'iptables -A INPUT -i eth0 -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT'
-ssh -i $ID_RSA root@$SERVER_IP 'iptables -A INPUT -i eth0 -p tcp --dport 443 -m state --state NEW,ESTABLISHED -j ACCEPT'
-ssh -i $ID_RSA root@$SERVER_IP 'iptables -A INPUT -i eth0 -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT'
-ssh -i $ID_RSA root@$SERVER_IP 'iptables -A OUTPUT -o eth0 -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT'
+ssh -i $ID_RSA root@$SERVER_IP 'iptables -A INPUT -i eth1 -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT'
+ssh -i $ID_RSA root@$SERVER_IP 'iptables -A INPUT -i eth1 -p tcp --dport 443 -m state --state NEW,ESTABLISHED -j ACCEPT'
+ssh -i $ID_RSA root@$SERVER_IP 'iptables -A INPUT -i eth1 -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT'
+ssh -i $ID_RSA root@$SERVER_IP 'iptables -A OUTPUT -o eth1 -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT'
 ssh -i $ID_RSA root@$SERVER_IP 'iptables -I INPUT 1 -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT'
-ssh -i $ID_RSA root@$SERVER_IP 'iptables -A INPUT -i eth0 -j DROP'
+ssh -i $ID_RSA root@$SERVER_IP 'iptables -A INPUT -i eth1 -j DROP'
 
 # Restart containers, because ElasticSearch takes too long to start up:
 #ssh -i $ID_RSA root@$SERVER_IP 'sleep 60; sudo docker-compose --file /home/peerbelt/docker-compose.yml restart consumerapi'
