@@ -27,7 +27,7 @@ ssh -i $ID_RSA root@$SERVER_IP 'chmod 400 /etc/sudoers.d/rackspace_user'
 
 # Copies the services and Nginx config to the new EC2
 ssh -i $ID_RSA root@$SERVER_IP 'sudo mkdir -p /var/log/console-api/ /var/log/consumer/ /var/log/tracking-api /var/log/digest /var/data/console-api'
-#ssh -i $ID_RSA root@$SERVER_IP 'sudo apt-get install -y nginx; sudo rm -rf /etc/nginx/sites-enabled/default'
+ssh -i $ID_RSA root@$SERVER_IP ' sudo rm -rf /etc/nginx/sites-enabled/default'
 scp -i $ID_RSA pb-core-saas-website-latest.tar root@$SERVER_IP:/home/peerbelt
 scp -i $ID_RSA pb-core-console-latest.tar root@$SERVER_IP:/home/peerbelt
 scp -i $ID_RSA pb-core-console-api-latest.tar root@$SERVER_IP:/home/peerbelt
@@ -35,7 +35,7 @@ scp -i $ID_RSA pb-core-tracking-api-latest.tar root@$SERVER_IP:/home/peerbelt
 scp -i $ID_RSA pb-core-consumer-api-latest.tar root@$SERVER_IP:/home/peerbelt
 scp -i $ID_RSA pb-core-digest-latest.tar root@$SERVER_IP:/home/peerbelt
 scp -i $ID_RSA pb_services.nginx root@$SERVER_IP:/home/peerbelt/pb_services.nginx
-ssh -i $ID_RSA root@$SERVER_IP 'sudo mv /home/peerbelt/pb_services.nginx /etc/nginx/sites-available/pb_services.nginx'
+ssh -i $ID_RSA root@$SERVER_IP 'sudo mv /home/peerbelt/pb_services.nginx /etc/nginx/sites-available/pb_services.nqginx'
 ssh -i $ID_RSA root@$SERVER_IP 'sudo  ln -s  /etc/nginx/sites-available/pb_services.nginx /etc/nginx/sites-enabled/pb_services.nginx'
 
 # Starts the services
@@ -74,8 +74,8 @@ ssh -i $ID_RSA root@$SERVER_IP 'iptables -A INPUT -i eth0 -j DROP'
 #ssh -i $ID_RSA root@$SERVER_IP 'sudo docker-compose --file /home/peerbelt/docker-compose.yml restart digest'
 
 # Clean up
-ssh -i $ID_RSA root@$SERVER_IP 'sudo sed -i s/PermitRootLogin\ yes/PermitRootLogin\ no/g /etc/ssh/sshd_config'
-ssh -i $ID_RSA root@$SERVER_IP 'sudo sed -i s/PasswordAuthentication\ yes/PasswordAuthentication\ no/g /etc/ssh/sshd_config'
+ssh -i $ID_RSA root@$SERVER_IP 'sudo sed -i s/PermitRootLogin\ Yes/PermitRootLogin\ no/g /etc/ssh/sshd_config'
+ssh -i $ID_RSA root@$SERVER_IP 'sudo sed -i s/\#PasswordAuthentication\ no/PasswordAuthentication\ no/g /etc/ssh/sshd_config'
 ssh -i $ID_RSA root@$SERVER_IP 'sudo sed -i s/UsePAM\ yes/UsePAM\ no/g /etc/ssh/sshd_config'
 ssh -i $ID_RSA root@$SERVER_IP 'sudo service ssh restart'
 

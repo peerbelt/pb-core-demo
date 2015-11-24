@@ -15,7 +15,11 @@ dependencies:
     - cp /home/ubuntu/pb-core-demo/.softlayer /home/ubuntu/.softlayer
     - sed -i "s|SL_USER_REPLACE|$SL_USER|g" /home/ubuntu/.softlayer
     - sed -i "s|SL_API_KEY_REPLACE|$SL_API_KEY|g" /home/ubuntu/.softlayer
-    - sed "s/license_key\=*/license_key\=$NEWRELIC_NON_PROD/g" nrsysmond.cfg
+    - sed -i "s/AWS_KEY/$AWS_ACCESS_KEY_ID/g" config
+    - sed -i "s|AWS_SECRET|$AWS_SECRET_ACCESS_KEY|g" config
+    - sed -i "s/license_key\=*/license_key\=$NEWRELIC_NON_PROD/g" nrsysmond.cfg
+    - sed -i "s/TRAPI_ACCESS_TOKEN/$TRACKINGAPI_ACCESS_TOKEN/g" docker-compose.yml
+    - sed -i "s/NEWRELIC_LICENSE/$NEWRELIC_PROD/g" docker-compose.yml
     - aws s3 cp s3://devops-peerbelt/sl_keys/id_rsa .
     - chmod 400 id_rsa
   override:
