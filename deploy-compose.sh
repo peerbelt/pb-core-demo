@@ -1,5 +1,12 @@
 #!/bin/bash -x
 
+SRV_STATUS=`slcli vs ready "sl-$CIRCLE_BUILD_NUM-web-wdc04" --wait=0`
+
+until  [[ $SRV_STATUS == 'READY' ]]; do 
+	sleep 60;
+        SRV_STATUS=`slcli vs ready "sl-$CIRCLE_BUILD_NUM-web-wdc04" --wait=0`;
+done   
+
 ID_RSA=/home/ubuntu/id_rsa
 USER_DIR=/home/peerbelt
 SERVER_IP=`slcli vs list -H sl-$CIRCLE_BUILD_NUM-web-wdc04 | awk {'print $3'}`
