@@ -7,7 +7,7 @@ until  [[ $SRV_STATUS == 'READY' ]]; do
         SRV_STATUS=`slcli vs ready "sl-$CIRCLE_BUILD_NUM-web-wdc04" --wait=0`;
 done   
 
-ID_RSA=/home/ubuntu/id_rsa
+ID_RSA=/home/ubuntu/pb-core-demo/id_rsa
 USER_DIR=/home/peerbelt
 SERVER_IP=`slcli vs list -H sl-$CIRCLE_BUILD_NUM-web-wdc04 | awk {'print $3'}`
 
