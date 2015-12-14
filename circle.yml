@@ -39,6 +39,6 @@ deployment:
       branch: [prod]
       commands:
         # Creates the SL instance
-        - slcli -y vs create -H "sl-$CIRCLE_BUILD_NUM-web-wdc04" -D "peerbelt.com" -c 16 -m 16384 -d "tor01" -k "root-user-web-key" -n "1000" --billing 'hourly' --image $IMAGE_GUID
+        - slcli -y vs create -H "sl-$CIRCLE_BUILD_NUM-web-tor01" -D "peerbelt.com" -c 16 -m 16384 -d "tor01" -k "root-user-web-key" -n "1000" --billing 'hourly' --image $IMAGE_GUID
         #Deploy services and containers 
         - /bin/bash -x ./deploy-compose.sh
